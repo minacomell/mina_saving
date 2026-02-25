@@ -434,42 +434,47 @@ Days per week:
 
 /* PAGE */
 function show(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'))
-  document.getElementById(id).classList.add('active')
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
 
-  const bubble = document.getElementById('bubble')
-  const cat = document.getElementById('cat')
+  const bubble = document.getElementById('bubble');
+  const cat = document.getElementById('cat');
 
   switch(id){
     case 'home':
-      bubble.innerText = "Hi, I'm Mina 🐱"
-      cat.src = "home-cat.png"
-      cat.style.animation = "float 3s ease-in-out infinite"
+      bubble.innerText = "Hi, I'm Mina 🐱";
+      cat.src = "home-cat.png";       // kucing home
+      cat.style.animation = "float 3s ease-in-out infinite";
       break;
+
     case 'menu':
-      bubble.innerText = "Let's get started!"
-      cat.src = "menu-cat.png"
-      cat.style.animation = "wiggle 2s ease-in-out infinite"
+      bubble.innerText = "Let's get started!";
+      cat.src = "menu-cat.png";       // kucing menu
+      cat.style.animation = "wiggle 2s ease-in-out infinite";
       break;
+
     case 'save1':
-      bubble.innerText = "Time to save 💰"
-      cat.src = "saving-cat.png"
-      cat.style.animation = "jump 2s ease-in-out infinite"
+      bubble.innerText = "Time to save 💰";
+      cat.src = "saving-cat.png";     // kucing menabung
+      cat.style.animation = "jump 2s ease-in-out infinite";
       break;
+
     case 'debts1':
-      bubble.innerText = "Manage your debts 📒"
-      cat.src = "debts-cat.png"
-      cat.style.animation = "shake 0.5s ease-in-out infinite"
+      bubble.innerText = "Manage your debts 📒";
+      cat.src = "debts-cat.png";      // **ubah kucing khusus debts**
+      cat.style.animation = "shake 0.5s ease-in-out infinite";
       break;
+
     case 'planner1':
-      bubble.innerText = "Plan your money 📊"
-      cat.src = "planner-cat.png"
-      cat.style.animation = "tilt 2s ease-in-out infinite"
+      bubble.innerText = "Plan your money 📊";
+      cat.src = "planner-cat.png";    // **ubah kucing khusus planner**
+      cat.style.animation = "tilt 2s ease-in-out infinite";
       break;
+
     default:
-      bubble.innerText = "Hi, I'm Mina 🐱"
-      cat.src = "home-cat.png"
-      cat.style.animation = "float 3s ease-in-out infinite"
+      bubble.innerText = "Hi, I'm Mina 🐱";
+      cat.src = "home-cat.png";
+      cat.style.animation = "float 3s ease-in-out infinite";
   }
 }
 
@@ -629,6 +634,7 @@ renderList()
 
 </body>
 </html>
+
 
 
 
