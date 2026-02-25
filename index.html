@@ -4,6 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Mina's Saving</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
 body{
@@ -40,7 +41,7 @@ h1{ color:#ff6fa5 }
   box-shadow:0 10px 25px rgba(0,0,0,0.1);
   margin:10px;
   width:100%;
-  max-width:400px;
+  max-width:420px;
 }
 
 button{
@@ -56,6 +57,8 @@ button{
 .secondary{ background:#90dbf4 }
 .danger{ background:#ff6b6b; color:white }
 .back{ background:#ccc }
+.modeBtn{ background:#cdb4db }
+.activeMode{ outline:3px solid #ff8fab }
 
 input{
   padding:10px;
@@ -70,7 +73,7 @@ input{
   grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
   gap:10px;
   width:100%;
-  max-width:500px;
+  max-width:520px;
 }
 
 .iconCard{
@@ -82,9 +85,7 @@ input{
   transition:0.3s;
 }
 
-.iconCard:hover{
-  transform:scale(1.05);
-}
+.iconCard:hover{ transform:scale(1.05) }
 
 table{
   width:100%;
@@ -100,6 +101,13 @@ th,td{
 
 .star{ font-size:28px; cursor:pointer }
 
+.cat{
+  font-size:50px;
+  cursor:pointer;
+  transition:0.2s;
+}
+.cat:active{ transform:scale(1.2) }
+
 </style>
 </head>
 
@@ -107,30 +115,39 @@ th,td{
 
 <audio id="coinSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_4010d5c1b4.mp3?filename=coin-collect-19324.mp3"></audio>
 <audio id="failSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_9c6c13c370.mp3?filename=error-126627.mp3"></audio>
+<audio id="catSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_6f9b1b4b1a.mp3?filename=cat-meow-14536.mp3"></audio>
 
 <!-- PAGE 1 -->
 <div class="page active" id="page1">
   <h1>Mina's Saving 💰</h1>
   <p>Manage your saving with Mina ✨</p>
+  <div class="cat" onclick="meow()">🐱</div>
+  <small>klik aku!</small>
+  <br><br>
   <button class="primary" onclick="goPage(2)">Start</button>
 </div>
 
-<!-- PAGE 2 : LIST TABUNGAN -->
+<!-- PAGE 2 -->
 <div class="page" id="page2">
-  <h2>Pilih Tabungan</h2>
+  <h2 id="modeTitle">Tabungan</h2>
 
-  <div class="card">
-    <input id="judulTabungan" placeholder="Judul tabungan (contoh: Tabungan HP)">
-    <input id="targetTabungan" placeholder="Target uang">
-    <button class="primary" onclick="tambahTabungan()">Tambah</button>
+  <div>
+    <button id="btnSaving" class="modeBtn activeMode" onclick="setMode('saving')">💰 Nabung</button>
+    <button id="btnDebt" class="modeBtn" onclick="setMode('debt')">📒 Utang Piutang</button>
   </div>
 
-  <div class="grid" id="listTabungan"></div>
+  <div class="card">
+    <input id="judulItem" placeholder="Judul">
+    <input id="targetItem" placeholder="Target (opsional)">
+    <button class="primary" onclick="tambahItem()">Tambah</button>
+  </div>
+
+  <div class="grid" id="listItem"></div>
 
   <button class="back" onclick="goPage(1)">Kembali</button>
 </div>
 
-<!-- PAGE 3 : DETAIL -->
+<!-- PAGE 3 -->
 <div class="page" id="page3">
   <h2 id="judulDetail"></h2>
 
@@ -138,12 +155,13 @@ th,td{
     <input type="date" id="tanggal">
     <input id="jumlah" placeholder="Jumlah uang">
     <br>
-    <button class="secondary" onclick="tambahUang()">+ Nabung</button>
-    <button class="danger" onclick="kurangUang()">− Ambil</button>
+    <button class="secondary" onclick="tambahUang()">+ Masuk</button>
+    <button class="danger" onclick="kurangUang()">− Keluar</button>
   </div>
 
   <div class="card">
     <h3>Total: Rp <span id="total">0</span></h3>
+    <canvas id="chart"></canvas>
     <table>
       <thead>
         <tr>
@@ -161,7 +179,7 @@ th,td{
 
 <!-- RATING -->
 <div class="card" style="position:fixed;bottom:10px;right:10px">
-  <div id="stars">
+  <div>
     <span class="star" onclick="rate(1)">⭐</span>
     <span class="star" onclick="rate(2)">⭐</span>
     <span class="star" onclick="rate(3)">⭐</span>
@@ -172,63 +190,101 @@ th,td{
 </div>
 
 <script>
-let data = JSON.parse(localStorage.getItem("minaSaving")) || [];
-let current = null;
+let mode = 'saving';
+let savingData = JSON.parse(localStorage.getItem('minaSaving')) || [];
+let debtData = JSON.parse(localStorage.getItem('minaDebt')) || [];
+let currentIndex = null;
+let chart;
+
+function currentData(){ return mode==='saving'?savingData:debtData }
+
+function saveAll(){
+  localStorage.setItem('minaSaving', JSON.stringify(savingData));
+  localStorage.setItem('minaDebt', JSON.stringify(debtData));
+}
 
 function goPage(p){
   document.querySelectorAll('.page').forEach(el=>el.classList.remove('active'));
   document.getElementById('page'+p).classList.add('active');
-  if(p===2) renderTabungan();
+  if(p===2) renderList();
+}
+
+function setMode(m){
+  mode=m;
+  document.getElementById('modeTitle').innerText=m==='saving'?'Tabungan':'Utang Piutang';
+  document.getElementById('btnSaving').classList.toggle('activeMode', m==='saving');
+  document.getElementById('btnDebt').classList.toggle('activeMode', m==='debt');
+  renderList();
 }
 
 function formatRupiah(angka){
-  return angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  return (angka||0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
 
-function tambahTabungan(){
-  let judul = document.getElementById('judulTabungan').value;
-  let target = parseInt(document.getElementById('targetTabungan').value);
-  if(!judul || !target) return;
-
-  data.push({judul,target,total:0,riwayat:[]});
-  simpan();
-  renderTabungan();
+function tambahItem(){
+  let judul=document.getElementById('judulItem').value;
+  let target=parseInt(document.getElementById('targetItem').value)||0;
+  if(!judul) return;
+  currentData().push({judul,target,total:0,riwayat:[]});
+  saveAll();
+  renderList();
 }
 
-function renderTabungan(){
-  let list = document.getElementById('listTabungan');
+function renderList(){
+  let list=document.getElementById('listItem');
   list.innerHTML='';
-
-  data.forEach((tab,i)=>{
+  currentData().forEach((item,i)=>{
     let div=document.createElement('div');
     div.className='iconCard';
-    div.innerHTML=`💰<br>${tab.judul}`;
-    div.onclick=()=>bukaDetail(i);
+    div.innerHTML=`${mode==='saving'?'💰':'📒'}<br>${item.judul}`;
+    div.onclick=()=>openDetail(i);
     list.appendChild(div);
   });
 }
 
-function bukaDetail(i){
-  current=i;
-  document.getElementById('judulDetail').innerText=data[i].judul;
+function openDetail(i){
+  currentIndex=i;
+  document.getElementById('judulDetail').innerText=currentData()[i].judul;
   renderDetail();
   goPage(3);
 }
 
 function renderDetail(){
-  let tab=data[current];
-  document.getElementById('total').innerText=formatRupiah(tab.total);
+  let item=currentData()[currentIndex];
+  document.getElementById('total').innerText=formatRupiah(item.total);
 
   let tbody=document.getElementById('tabel');
   tbody.innerHTML='';
 
-  tab.riwayat.forEach(r=>{
-    tbody.innerHTML+=`
-      <tr>
-        <td>${r.tanggal}</td>
-        <td>${r.masuk? 'Rp '+formatRupiah(r.masuk):'-'}</td>
-        <td>${r.keluar? 'Rp '+formatRupiah(r.keluar):'-'}</td>
-      </tr>`;
+  let labels=[];
+  let saldo=0;
+  let dataChart=[];
+
+  item.riwayat.forEach(r=>{
+    tbody.innerHTML+=`<tr>
+      <td>${r.tanggal}</td>
+      <td>${r.masuk?'Rp '+formatRupiah(r.masuk):'-'}</td>
+      <td>${r.keluar?'Rp '+formatRupiah(r.keluar):'-'}</td>
+    </tr>`;
+
+    saldo += (r.masuk||0) - (r.keluar||0);
+    labels.push(r.tanggal);
+    dataChart.push(saldo);
+  });
+
+  if(chart) chart.destroy();
+
+  chart=new Chart(document.getElementById('chart'),{
+    type:'line',
+    data:{
+      labels:labels,
+      datasets:[{
+        label:'Perkembangan Uang',
+        data:dataChart,
+        borderWidth:2
+      }]
+    },
+    options:{ responsive:true }
   });
 }
 
@@ -237,11 +293,11 @@ function tambahUang(){
   let jml=parseInt(document.getElementById('jumlah').value);
   if(!tgl||!jml) return;
 
-  let tab=data[current];
-  tab.total+=jml;
-  tab.riwayat.push({tanggal:tgl,masuk:jml});
+  let item=currentData()[currentIndex];
+  item.total+=jml;
+  item.riwayat.push({tanggal:tgl,masuk:jml});
   document.getElementById('coinSound').play();
-  simpan();
+  saveAll();
   renderDetail();
 }
 
@@ -250,17 +306,15 @@ function kurangUang(){
   let jml=parseInt(document.getElementById('jumlah').value);
   if(!tgl||!jml) return;
 
-  let tab=data[current];
-  tab.total-=jml;
-  tab.riwayat.push({tanggal:tgl,keluar:jml});
+  let item=currentData()[currentIndex];
+  item.total-=jml;
+  item.riwayat.push({tanggal:tgl,keluar:jml});
   document.getElementById('failSound').play();
-  simpan();
+  saveAll();
   renderDetail();
 }
 
-function simpan(){
-  localStorage.setItem("minaSaving",JSON.stringify(data));
-}
+function meow(){ document.getElementById('catSound').play(); }
 
 // RATING
 let ratings=JSON.parse(localStorage.getItem("rating"))||[];
@@ -277,6 +331,7 @@ function tampilRating(){
 }
 
 tampilRating();
+renderList();
 </script>
 
 </body>
