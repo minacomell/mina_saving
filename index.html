@@ -215,30 +215,57 @@ th,td{
 
 }
 
- /* ================= BUBBLE CHAT BARU ================= */
-.cat-container{
-    position: fixed;
-    bottom: 50px;        /* posisi kucing agak atas */
-    right: 30px;
-    display: flex;
-    flex-direction: column;  /* biar bubble di atas kucing */
-    align-items: center;      /* tengahin bubble & kucing secara horizontal */
-    gap: 6px;                 /* jarak bubble ke kucing */
-    z-index: 999;
-}
-
-.cat{
-    width: 120px;
-    cursor: pointer;
-    animation: float 3s ease-in-out infinite;
-}
-
+ /* FLOAT lembut - Home */
 @keyframes float{
-    0%,100%{ transform: translateY(0);}
-    50%{ transform: translateY(-6px);}
+  0%,100%{ transform: translateY(0);}
+  50%{ transform: translateY(-6px);}
+}
+
+/* WIGGLE kiri-kanan - Menu */
+@keyframes wiggle{
+  0%,100%{ transform: rotate(0deg);}
+  25%{ transform: rotate(5deg);}
+  75%{ transform: rotate(-5deg);}
+}
+
+/* JUMP kecil - Savings */
+@keyframes jump{
+  0%,100%{ transform: translateY(0);}
+  50%{ transform: translateY(-12px);}
+}
+
+/* SHAKE horizontal - Debts */
+@keyframes shake{
+  0%,100%{ transform: translateX(0);}
+  25%{ transform: translateX(-5px);}
+  75%{ transform: translateX(5px);}
+}
+
+/* TILT - Planner */
+@keyframes tilt{
+  0%,100%{ transform: rotate(0deg);}
+  50%{ transform: rotate(8deg);}
+}
+
+/* Cat general style */
+.cat{
+  width: 120px;
+  cursor: pointer;
+  animation: float 3s ease-in-out infinite; /* default */
 }
 
 /* Bubble chat */
+.cat-container{
+    position: fixed;
+    bottom: 50px;
+    right: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    z-index: 999;
+}
+
 .chat-bubble{
     position: relative;
     background: var(--card);
@@ -250,12 +277,11 @@ th,td{
     z-index: 10;
 }
 
-/* Tonjolan lucu ke arah kucing */
 .chat-bubble::after{
     content: "";
     position: absolute;
-    bottom: -6px;       /* di bawah bubble, mengarah ke kucing */
-    left: 50%;           /* tengah bubble */
+    bottom: -6px;
+    left: 50%;
     transform: translateX(-50%);
     width: 14px;
     height: 14px;
@@ -400,18 +426,51 @@ Days per week:
 
 <!-- CAT + BUBBLE -->
 <div class="cat-container">
-    <div class="bubble-wrapper">
-        <div class="chat-bubble" id="bubble">Hi, I'm Mina 🐱</div>
-    </div>
-    <img src="mina-cat.png" class="cat" onclick="meow()">
+    <div class="chat-bubble" id="bubble">Hi, I'm Mina 🐱</div>
+    <img src="home-cat.png" class="cat" id="cat" onclick="meow()">
 </div>
 
 <script>
 
 /* PAGE */
 function show(id){
-document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'))
-document.getElementById(id).classList.add('active')
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'))
+  document.getElementById(id).classList.add('active')
+
+  const bubble = document.getElementById('bubble')
+  const cat = document.getElementById('cat')
+
+  switch(id){
+    case 'home':
+      bubble.innerText = "Hi, I'm Mina 🐱"
+      cat.src = "home-cat.png"
+      cat.style.animation = "float 3s ease-in-out infinite"
+      break;
+    case 'menu':
+      bubble.innerText = "Let's get started!"
+      cat.src = "menu-cat.png"
+      cat.style.animation = "wiggle 2s ease-in-out infinite"
+      break;
+    case 'save1':
+      bubble.innerText = "Time to save 💰"
+      cat.src = "saving-cat.png"
+      cat.style.animation = "jump 2s ease-in-out infinite"
+      break;
+    case 'debts1':
+      bubble.innerText = "Manage your debts 📒"
+      cat.src = "debts-cat.png"
+      cat.style.animation = "shake 0.5s ease-in-out infinite"
+      break;
+    case 'planner1':
+      bubble.innerText = "Plan your money 📊"
+      cat.src = "planner-cat.png"
+      cat.style.animation = "tilt 2s ease-in-out infinite"
+      break;
+    default:
+      bubble.innerText = "Hi, I'm Mina 🐱"
+      cat.src = "home-cat.png"
+      cat.style.animation = "float 3s ease-in-out infinite"
+  }
 }
 
 /* THEME */
@@ -570,6 +629,7 @@ renderList()
 
 </body>
 </html>
+
 
 
 
