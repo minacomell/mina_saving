@@ -1,157 +1,117 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Mina's Finance Assistant</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+<title>Money Planner</title>
 
 <style>
 
 /* ================= THEME ================= */
 
 :root{
-  --bg:#fdf6ff;
+  --bg:#f6f7fb;
   --card:#ffffff;
-  --text:#3a3a3a;
-
-  --primary:#ffb6c9;
-  --secondary:#cde7ff;
-  --accent:#d7ffd9;
-
-  --nav:#ffffffcc;
+  --text:#222;
+  --accent:#7aa2ff;
 }
 
 body.dark{
-  --bg:#1e1e2f;
-  --card:#2b2b3d;
+  --bg:#1e1f26;
+  --card:#2a2c36;
   --text:#f1f1f1;
+  --accent:#8ab4ff;
+}
 
-  --primary:#ff8ac2;
-  --secondary:#6ca0ff;
-  --accent:#5fd4a3;
-
-  --nav:#2b2b3dcc;
+body.pastel{
+  --bg:#fdf6f9;
+  --card:#ffffff;
+  --text:#333;
+  --accent:#a8d8ea;
 }
 
 body{
   margin:0;
-  font-family:"Poppins",sans-serif;
+  font-family:'Segoe UI',sans-serif;
   background:var(--bg);
   color:var(--text);
-  transition:0.4s;
+  transition:.4s;
 }
 
 /* ================= PAGE ================= */
 
 .page{
   display:none;
-  min-height:100vh;
   padding:20px;
-  text-align:center;
-  animation:fade 0.4s;
+  animation:fade .4s;
 }
 
-.page.active{display:block;}
+.page.active{
+  display:block;
+}
 
 @keyframes fade{
-  from{opacity:0; transform:translateY(20px)}
-  to{opacity:1; transform:translateY(0)}
+  from{opacity:0;transform:translateY(10px)}
+  to{opacity:1}
 }
 
-.center{
+/* ================= NAV CENTER ================= */
+
+.nav{
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+  background:var(--card);
+  padding:12px 20px;
+  border-radius:30px;
+  box-shadow:0 5px 15px rgba(0,0,0,.15);
   display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  height:80vh;
+  gap:15px;
+  z-index:10;
+}
+
+.nav button{
+  border:none;
+  background:none;
+  font-size:16px;
+  cursor:pointer;
+  color:var(--text);
 }
 
 /* ================= CARD ================= */
 
 .card{
   background:var(--card);
-  padding:15px;
+  padding:20px;
   border-radius:20px;
-  margin:10px auto;
-  max-width:500px;
-  box-shadow:0 5px 15px rgba(0,0,0,0.1);
-  border:2px solid var(--secondary);
-}
-
-/* ================= BUTTON ================= */
-
-button{
-  border:none;
-  padding:10px 16px;
-  border-radius:20px;
-  cursor:pointer;
-  margin:5px;
-  font-weight:600;
-  color:white;
-  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  margin-bottom:15px;
+  box-shadow:0 4px 10px rgba(0,0,0,.08);
 }
 
 /* ================= INPUT ================= */
 
 input,select{
+  width:100%;
   padding:10px;
   border-radius:10px;
   border:1px solid #ccc;
-  margin:5px;
+  margin-top:5px;
+  margin-bottom:10px;
 }
 
-/* ================= NAVBAR ================= */
+/* ================= BUTTON ================= */
 
-.nav{
-  position:fixed;
-  bottom:25px;
-  left:50%;
-  transform:translateX(-50%);
-  background:var(--nav);
-  backdrop-filter:blur(12px);
-  padding:12px 18px;
-  border-radius:30px;
-  box-shadow:0 8px 20px rgba(0,0,0,0.15);
-  display:flex;
-  gap:10px;
-}
-
-/* ================= ICON GRID ================= */
-
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
-  gap:15px;
-  max-width:600px;
-  margin:auto;
-}
-
-.icon{
-  background:var(--card);
-  padding:20px;
-  border-radius:20px;
+.btn{
+  background:var(--accent);
+  color:white;
+  border:none;
+  padding:10px;
+  border-radius:10px;
   cursor:pointer;
-  box-shadow:0 4px 10px rgba(0,0,0,0.1);
-  border:2px solid var(--secondary);
-}
-
-/* ================= PROGRESS ================= */
-
-.progress{
-  height:20px;
-  background:#ddd;
-  border-radius:20px;
-  overflow:hidden;
-  margin-top:10px;
-}
-
-.bar{
-  height:100%;
-  width:0%;
-  background:linear-gradient(90deg,var(--primary),var(--accent));
+  width:100%;
 }
 
 /* ================= TABLE ================= */
@@ -159,342 +119,411 @@ input,select{
 table{
   width:100%;
   border-collapse:collapse;
+  margin-top:10px;
 }
 
 th,td{
-  border:1px solid #ccc;
-  padding:6px;
-  font-size:14px;
+  padding:8px;
+  border-bottom:1px solid #ddd;
+  text-align:center;
 }
 
-/* ================= MINA PET ================= */
+/* ================= CAT ================= */
 
-.mina{
+.cat{
   position:fixed;
-  right:20px;
-  bottom:120px;
+  right:10px;
+  bottom:10px;
   width:120px;
   cursor:pointer;
-  animation:float 3s infinite;
+  z-index:9;
+  animation:float 3s infinite ease-in-out;
 }
 
 @keyframes float{
-  0%{transform:translateY(0)}
-  50%{transform:translateY(-10px)}
-  100%{transform:translateY(0)}
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-8px)}
 }
+
+/* ================= BUBBLE ================= */
 
 .bubble{
   position:fixed;
-  right:150px;
-  bottom:230px;
+  right:130px;
+  bottom:80px;
   background:var(--card);
-  padding:10px 15px;
-  border-radius:15px;
-  box-shadow:0 4px 10px rgba(0,0,0,0.1);
-  max-width:200px;
+  padding:8px 12px;
+  border-radius:12px;
+  font-size:13px;
+  box-shadow:0 4px 10px rgba(0,0,0,.15);
+  max-width:150px;
+}
+
+.bubble:after{
+  content:"";
+  position:absolute;
+  right:-10px;
+  bottom:10px;
+  border-width:6px;
+  border-style:solid;
+  border-color:transparent transparent transparent var(--card);
+}
+
+/* ================= PROGRESS ================= */
+
+.progress{
+  background:#ddd;
+  border-radius:10px;
+  overflow:hidden;
+  height:10px;
+  margin-top:5px;
+}
+
+.progress div{
+  height:100%;
+  background:var(--accent);
 }
 
 /* ================= RESPONSIVE ================= */
 
 @media(max-width:600px){
-
-  .mina{
-    width:90px;
-    bottom:110px;
-  }
-
-  .bubble{
-    right:110px;
-  }
-
+  .cat{width:90px}
 }
 
 </style>
 </head>
 <body>
 
-<!-- ================= HOME ================= -->
+<!-- ================= PAGE 1 ================= -->
 
-<div id="home" class="page active">
+<div class="page active" id="page1">
 
-<div class="center">
+<h1>Money Savings Planner</h1>
 
-<h1>Mina's Finance Assistant 🐱💰</h1>
-<p>Hi, I'm Mina! Your cute finance helper ✨</p>
+<div class="card">
+<button class="btn" onclick="goPage(2)">Let's Start</button>
+</div>
 
-<button onclick="show('menu')">Let's Start ✨</button>
-<button onclick="theme()">Theme</button>
-
+<div class="card">
+Theme:
+<button onclick="setTheme('dark')">Dark</button>
+<button onclick="setTheme('pastel')">Pastel</button>
 </div>
 
 </div>
 
-<!-- ================= MENU ================= -->
+<!-- ================= PAGE 2 MENU ================= -->
 
-<div id="menu" class="page">
+<div class="page" id="page2">
 
-<h2>Choose Menu</h2>
+<h2 id="chooseMenuText">Choose Menu</h2>
 
-<div class="grid">
-
-<div class="icon" onclick="show('save1')">
-💰<br>Savings<br><small>Menabung</small>
+<div class="card" onclick="openSavings()">
+💰 <span id="savingsText">Savings</span>
 </div>
 
-<div class="icon">
-📒<br>Debts<br><small>Utang Piutang</small>
+<div class="card" onclick="openDebts()">
+📄 <span id="debtsText">Debts</span>
 </div>
 
-<div class="icon">
-📊<br>Money Planner<br><small>Perencana Uang</small>
+<div class="card" onclick="openPlanner()">
+📊 <span id="plannerText">Money Planner</span>
+</div>
+
+<div class="card">
+Language:
+<button onclick="setLanguage('id')">🇮🇩</button>
+<button onclick="setLanguage('en')">🇬🇧</button>
 </div>
 
 </div>
 
+<!-- ================= SAVINGS LIST ================= -->
+
+<div class="page" id="savingsList">
+
+<h2 id="yourSavingsText">Your Savings</h2>
+
+<div id="savingContainer"></div>
+
+<button class="btn" onclick="createSavings()" id="addText">Add</button>
+
 </div>
 
-<!-- ================= CREATE SAVING ================= -->
+<!-- ================= SAVINGS DETAIL ================= -->
 
-<div id="save1" class="page">
+<div class="page" id="savingDetail">
 
-<h2>Create Savings</h2>
+<h2 id="savingTitle"></h2>
 
 <div class="card">
 
-<input id="title" placeholder="Savings title"><br>
-<input id="target" placeholder="Target amount"><br>
+<input type="number" id="amountInput" placeholder="Amount">
 
-Days per week:
-<select id="days">
-<option>1</option>
-<option>2</option>
-<option>3</option>
-<option>4</option>
-<option>5</option>
-<option>6</option>
-<option>7</option>
-</select><br>
+<button class="btn" onclick="addMoney(true)">➕ Save</button>
+<button class="btn" onclick="addMoney(false)">➖ Take</button>
 
-<button onclick="createSaving()">Create</button>
-
-</div>
-
-</div>
-
-<!-- ================= LIST ================= -->
-
-<div id="save2" class="page">
-
-<h2>Your Savings</h2>
-<div id="list"></div>
-
-</div>
-
-<!-- ================= DETAIL ================= -->
-
-<div id="save3" class="page">
-
-<h2 id="stitle"></h2>
-
-<div class="card">
-
-<input id="amount" placeholder="Amount"><br>
-
-<button onclick="add(true)">➕ Save</button>
-<button onclick="add(false)">➖ Take</button>
-
-<h3>Total: Rp <span id="total">0</span></h3>
+<div id="progressText"></div>
 
 <div class="progress">
-<div class="bar" id="bar"></div>
+<div id="progressBar"></div>
 </div>
-
-</div>
-
-<div class="card">
 
 <table>
-
 <thead>
 <tr>
-<th>Date</th>
-<th>Income</th>
-<th>Expense</th>
-<th>Balance</th>
+<th id="dateText">Date</th>
+<th id="incomeText">Income</th>
+<th id="expenseText">Expense</th>
+<th id="totalText">Total</th>
 </tr>
 </thead>
-
-<tbody id="tbody"></tbody>
-
+<tbody id="tableBody"></tbody>
 </table>
 
 </div>
 
 </div>
 
-<!-- ================= NAV ================= -->
+<!-- ================= CAT ================= -->
 
-<div class="nav">
-<button onclick="show('home')">Home</button>
-<button onclick="show('menu')">Menu</button>
-</div>
+<img src="https://cdn-icons-png.flaticon.com/512/616/616408.png" class="cat" onclick="meow()">
 
-<!-- ================= MINA ================= -->
+<div class="bubble" id="bubble">Let's get started!</div>
 
-<img src="mina-cat.png" class="mina" onclick="meow()">
-<div class="bubble" id="bubble">Hi, I'm Mina 🐱</div>
+<audio id="meowSound">
+<source src="meow.mp3" type="audio/mpeg">
+</audio>
+
+<!-- ================= SCRIPT ================= -->
 
 <script>
 
-/* ======== PAGE ======== */
+/* ---------- STORAGE ---------- */
 
-function show(id){
-document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'))
-document.getElementById(id).classList.add('active')
+let savings = JSON.parse(localStorage.getItem("savings")||"[]");
+let currentIndex = null;
+
+/* ---------- PAGE ---------- */
+
+function goPage(n){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.getElementById("page"+n)?.classList.add("active");
 }
 
-/* ======== THEME ======== */
+/* ---------- THEME ---------- */
 
-function theme(){
-document.body.classList.toggle('dark')
+function setTheme(t){
+  document.body.className=t;
+  localStorage.setItem("theme",t);
 }
 
-/* ======== SOUND ======== */
+document.body.className=localStorage.getItem("theme")||"";
 
-function meow(){
-let a=new Audio('meow.mp3')
-a.play()
+/* ---------- LANGUAGE ---------- */
+
+const textData={
+id:{
+chooseMenu:"Pilih Menu",
+savings:"Tabungan",
+debts:"Utang",
+planner:"Perencana",
+add:"Tambah",
+yourSavings:"Tabungan Kamu",
+date:"Tanggal",
+income:"Masuk",
+expense:"Keluar",
+total:"Total"
+},
+en:{
+chooseMenu:"Choose Menu",
+savings:"Savings",
+debts:"Debts",
+planner:"Money Planner",
+add:"Add",
+yourSavings:"Your Savings",
+date:"Date",
+income:"Income",
+expense:"Expense",
+total:"Total"
+}
+};
+
+function setLanguage(lang){
+localStorage.setItem("lang",lang);
+applyLanguage();
 }
 
-/* ======== FORMAT ======== */
+function applyLanguage(){
+let lang=localStorage.getItem("lang")||"id";
+let t=textData[lang];
 
-function format(n){
-return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,".")
+document.getElementById("chooseMenuText").innerText=t.chooseMenu;
+document.getElementById("savingsText").innerText=t.savings;
+document.getElementById("debtsText").innerText=t.debts;
+document.getElementById("plannerText").innerText=t.planner;
+document.getElementById("addText").innerText=t.add;
+document.getElementById("yourSavingsText").innerText=t.yourSavings;
+document.getElementById("dateText").innerText=t.date;
+document.getElementById("incomeText").innerText=t.income;
+document.getElementById("expenseText").innerText=t.expense;
+document.getElementById("totalText").innerText=t.total;
 }
 
-function parse(n){
-return Number(n.replace(/\./g,""))||0
+applyLanguage();
+
+/* ---------- MENU ---------- */
+
+function openSavings(){
+goPage("savingsList");
+renderSavings();
 }
 
-/* ======== DATA ======== */
-
-let data=JSON.parse(localStorage.getItem("mina"))||[]
-let current=null
-
-/* ======== CREATE ======== */
-
-function createSaving(){
-
-let title=document.getElementById("title").value
-let target=parse(document.getElementById("target").value)
-let days=document.getElementById("days").value
-
-let months=Math.ceil(target/(days*4*10000))
-
-bubble.innerText="Target reached about "+months+" months ✨"
-
-data.push({title,target,total:0,history:[]})
-
-save()
-renderList()
-show('save2')
-
+function openDebts(){
+alert("Debts page coming — same system as savings 👍");
 }
 
-/* ======== SAVE LOCAL ======== */
-
-function save(){
-localStorage.setItem("mina",JSON.stringify(data))
+function openPlanner(){
+alert("Money Planner page coming 👍");
 }
 
-/* ======== LIST ======== */
+/* ---------- CREATE SAVINGS ---------- */
 
-function renderList(){
+function createSavings(){
 
-list.innerHTML=""
+let name=prompt("Savings title?");
+let target=parseInt(prompt("Target amount?"));
 
-data.forEach((d,i)=>{
+if(!name||!target)return;
 
-list.innerHTML+=`
-<div class="card" onclick="openSaving(${i})">
-${d.title}
+savings.push({
+name,
+target,
+balance:0,
+history:[]
+});
+
+saveData();
+renderSavings();
+}
+
+/* ---------- RENDER SAVINGS ---------- */
+
+function renderSavings(){
+
+let box=document.getElementById("savingContainer");
+box.innerHTML="";
+
+savings.forEach((s,i)=>{
+
+let percent=Math.min(100,(s.balance/s.target)*100);
+
+box.innerHTML+=`
+<div class="card" onclick="openDetail(${i})">
+${s.name} ${percent>=100?"✅":""}
+<br>
+${format(s.balance)} / ${format(s.target)}
 </div>
-`
+`;
 
-})
-
-}
-
-/* ======== OPEN ======== */
-
-function openSaving(i){
-
-current=i
-stitle.innerText=data[i].title
-renderTable()
-show('save3')
+});
 
 }
 
-/* ======== ADD MONEY ======== */
+/* ---------- DETAIL ---------- */
 
-function add(isSave){
+function openDetail(i){
+currentIndex=i;
+goPage("savingDetail");
 
-let val=parse(amount.value)
+let s=savings[i];
 
-if(!val)return
+document.getElementById("savingTitle").innerText=s.name;
 
-let s=data[current]
+renderTable();
+}
 
-let inc=isSave?val:0
-let exp=isSave?0:val
+/* ---------- ADD MONEY ---------- */
 
-s.total+=inc-exp
+function addMoney(isSave){
+
+let val=parseInt(document.getElementById("amountInput").value);
+if(!val)return;
+
+let s=savings[currentIndex];
+
+if(isSave){
+s.balance+=val;
+}else{
+s.balance-=val;
+}
+
+let date=new Date().toLocaleDateString();
 
 s.history.push({
-date:new Date().toLocaleDateString(),
-inc,
-exp,
-bal:s.total
-})
+date,
+in:isSave?val:0,
+out:isSave?0:val,
+total:s.balance
+});
 
-save()
-renderTable()
-
+saveData();
+renderTable();
 }
 
-/* ======== TABLE ======== */
+/* ---------- TABLE ---------- */
 
 function renderTable(){
 
-let s=data[current]
+let s=savings[currentIndex];
 
-total.innerText=format(s.total)
-
-let percent=Math.min((s.total/s.target)*100,100)
-bar.style.width=percent+"%"
-
-tbody.innerHTML=""
+let body=document.getElementById("tableBody");
+body.innerHTML="";
 
 s.history.forEach(h=>{
 
-tbody.innerHTML+=`
+body.innerHTML+=`
 <tr>
 <td>${h.date}</td>
-<td>${format(h.inc)}</td>
-<td>${format(h.exp)}</td>
-<td>${format(h.bal)}</td>
+<td>${format(h.in)}</td>
+<td>${format(h.out)}</td>
+<td>${format(h.total)}</td>
 </tr>
-`
+`;
 
-})
+});
+
+let percent=Math.min(100,(s.balance/s.target)*100);
+
+document.getElementById("progressBar").style.width=percent+"%";
+document.getElementById("progressText").innerText="Progress "+percent.toFixed(0)+"%";
 
 }
 
-renderList()
+/* ---------- FORMAT ---------- */
+
+function format(num){
+return num.toLocaleString("id-ID");
+}
+
+/* ---------- SAVE ---------- */
+
+function saveData(){
+localStorage.setItem("savings",JSON.stringify(savings));
+}
+
+/* ---------- CAT SOUND ---------- */
+
+function meow(){
+document.getElementById("meowSound").play();
+}
+
+/* ---------- INIT ---------- */
+
+renderSavings();
 
 </script>
 
 </body>
 </html>
+```
