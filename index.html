@@ -218,23 +218,23 @@ th,td{
  /* ================= BUBBLE CHAT BARU ================= */
 .cat-container{
     position: fixed;
-    bottom: 80px;      /* agak atas dari pojok bawah */
-    right: 30px;       /* agak ke kiri dari tepi */
+    bottom: 50px;        /* posisi kucing agak atas */
+    right: 30px;
     display: flex;
-    align-items: flex-end;
-    gap: 3px;           /* jarak bubble ke kucing */
+    flex-direction: column;  /* biar bubble di atas kucing */
+    align-items: center;      /* tengahin bubble & kucing secara horizontal */
+    gap: 6px;                 /* jarak bubble ke kucing */
     z-index: 999;
 }
 
 .cat{
-    width: 120px;      /* ukuran kucing */
+    width: 120px;
     cursor: pointer;
-    animation: float 3s ease-in-out infinite; /* animasi */
+    animation: float 3s ease-in-out infinite;
 }
 
-/* animasi kucing floating */
 @keyframes float{
-    0%, 100%{ transform: translateY(0);}
+    0%,100%{ transform: translateY(0);}
     50%{ transform: translateY(-6px);}
 }
 
@@ -254,8 +254,9 @@ th,td{
 .chat-bubble::after{
     content: "";
     position: absolute;
-    bottom: 8px;
-    right: -6px;
+    bottom: -6px;       /* di bawah bubble, mengarah ke kucing */
+    left: 50%;           /* tengah bubble */
+    transform: translateX(-50%);
     width: 14px;
     height: 14px;
     background: var(--card);
@@ -399,7 +400,9 @@ Days per week:
 
 <!-- CAT + BUBBLE -->
 <div class="cat-container">
-    <div class="chat-bubble" id="bubble">Hi, I'm Mina 🐱</div>
+    <div class="bubble-wrapper">
+        <div class="chat-bubble" id="bubble">Hi, I'm Mina 🐱</div>
+    </div>
     <img src="mina-cat.png" class="cat" onclick="meow()">
 </div>
 
@@ -567,6 +570,7 @@ renderList()
 
 </body>
 </html>
+
 
 
 
