@@ -44,6 +44,24 @@ body{
   transition:0.4s;
 }
 
+/* ================= LANGUAGE ================= */
+
+.lang{
+position:fixed;
+top:10px;
+left:10px;
+z-index:999;
+}
+
+.lang button{
+padding:5px 10px;
+border-radius:10px;
+border:none;
+cursor:pointer;
+margin-right:5px;
+font-size:12px;
+}
+
 /* ================= PAGE ================= */
 
 .page{
@@ -214,108 +232,85 @@ th,td{
 </head>
 <body>
 
-<!-- ================= HOME ================= -->
+<!-- LANGUAGE -->
+<div class="lang">
+<button onclick="setLang('id')">🇮🇩</button>
+<button onclick="setLang('en')">🇬🇧</button>
+</div>
 
+<!-- HOME -->
 <div id="home" class="page active">
-
 <div class="center">
-
 <h1>Mina's Finance Assistant 🐱💰</h1>
-<p>Hi, I'm Mina! Your cute finance helper ✨</p>
-
-<button onclick="show('menu')">Let's Start ✨</button>
+<p id="homeText">Hi, I'm Mina! Your cute finance helper ✨</p>
+<button onclick="show('menu')" id="startBtn">Let's Start ✨</button>
 <button onclick="theme()">Theme</button>
-
+</div>
 </div>
 
-</div>
-
-<!-- ================= MENU ================= -->
-
+<!-- MENU -->
 <div id="menu" class="page">
-
-<h2>Choose Menu</h2>
-
+<h2 id="menuTitle">Choose Menu</h2>
 <div class="grid">
-
 <div class="icon" onclick="show('save1')">
-💰<br>Savings<br><small>Menabung</small>
+💰<br><span id="savText">Savings</span><br><small>Menabung</small>
+</div>
+<div class="icon" onclick="show('debts')">
+📒<br><span id="debText">Debts</span><br><small>Utang Piutang</small>
+</div>
+<div class="icon" onclick="show('planner')">
+📊<br><span id="planText">Money Planner</span><br><small>Perencana Uang</small>
+</div>
+</div>
 </div>
 
-<div class="icon">
-📒<br>Debts<br><small>Utang Piutang</small>
+<!-- DEBTS -->
+<div id="debts" class="page">
+<h2>Debts</h2>
+<div class="card">Feature coming soon ✨</div>
 </div>
 
-<div class="icon">
-📊<br>Money Planner<br><small>Perencana Uang</small>
+<!-- PLANNER -->
+<div id="planner" class="page">
+<h2>Money Planner</h2>
+<div class="card">Feature coming soon ✨</div>
 </div>
 
-</div>
-
-</div>
-
-<!-- ================= CREATE SAVING ================= -->
-
+<!-- CREATE SAVING -->
 <div id="save1" class="page">
-
 <h2>Create Savings</h2>
-
 <div class="card">
-
 <input id="title" placeholder="Savings title"><br>
 <input id="target" placeholder="Target amount"><br>
-
 Days per week:
 <select id="days">
-<option>1</option>
-<option>2</option>
-<option>3</option>
-<option>4</option>
-<option>5</option>
-<option>6</option>
+<option>1</option><option>2</option><option>3</option>
+<option>4</option><option>5</option><option>6</option>
 <option>7</option>
 </select><br>
-
 <button onclick="createSaving()">Create</button>
-
+</div>
 </div>
 
-</div>
-
-<!-- ================= LIST ================= -->
-
+<!-- LIST -->
 <div id="save2" class="page">
-
 <h2>Your Savings</h2>
 <div id="list"></div>
-
 </div>
 
-<!-- ================= DETAIL ================= -->
-
+<!-- DETAIL -->
 <div id="save3" class="page">
-
 <h2 id="stitle"></h2>
-
 <div class="card">
-
 <input id="amount" placeholder="Amount"><br>
-
 <button onclick="add(true)">➕ Save</button>
 <button onclick="add(false)">➖ Take</button>
-
 <h3>Total: Rp <span id="total">0</span></h3>
-
-<div class="progress">
-<div class="bar" id="bar"></div>
-</div>
-
+<div class="progress"><div class="bar" id="bar"></div></div>
 </div>
 
 <div class="card">
-
 <table>
-
 <thead>
 <tr>
 <th>Date</th>
@@ -324,51 +319,68 @@ Days per week:
 <th>Balance</th>
 </tr>
 </thead>
-
 <tbody id="tbody"></tbody>
-
 </table>
-
+</div>
 </div>
 
-</div>
-
-<!-- ================= NAV ================= -->
-
+<!-- NAV -->
 <div class="nav">
 <button onclick="show('home')">Home</button>
 <button onclick="show('menu')">Menu</button>
 </div>
 
-<!-- ================= MINA ================= -->
-
+<!-- MINA -->
 <img src="mina-cat.png" class="mina" onclick="meow()">
 <div class="bubble" id="bubble">Hi, I'm Mina 🐱</div>
 
 <script>
 
-/* ======== PAGE ======== */
-
+/* PAGE */
 function show(id){
 document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'))
 document.getElementById(id).classList.add('active')
 }
 
-/* ======== THEME ======== */
-
+/* THEME */
 function theme(){
 document.body.classList.toggle('dark')
 }
 
-/* ======== SOUND ======== */
-
+/* SOUND */
 function meow(){
-let a=new Audio('meow.mp3')
-a.play()
+new Audio('meow.mp3').play()
 }
 
-/* ======== FORMAT ======== */
+/* LANGUAGE */
+function setLang(lang){
 
+localStorage.setItem("lang",lang)
+
+if(lang=="id"){
+menuTitle.innerText="Pilih Menu"
+savText.innerText="Tabungan"
+debText.innerText="Utang"
+planText.innerText="Perencana"
+homeText.innerText="Hai, aku Mina! Asisten keuangan lucu kamu ✨"
+startBtn.innerText="Mulai ✨"
+}
+
+if(lang=="en"){
+menuTitle.innerText="Choose Menu"
+savText.innerText="Savings"
+debText.innerText="Debts"
+planText.innerText="Money Planner"
+homeText.innerText="Hi, I'm Mina! Your cute finance helper ✨"
+startBtn.innerText="Let's Start ✨"
+}
+
+}
+
+let savedLang=localStorage.getItem("lang")
+if(savedLang)setLang(savedLang)
+
+/* FORMAT */
 function format(n){
 return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,".")
 }
@@ -377,13 +389,11 @@ function parse(n){
 return Number(n.replace(/\./g,""))||0
 }
 
-/* ======== DATA ======== */
-
+/* DATA */
 let data=JSON.parse(localStorage.getItem("mina"))||[]
 let current=null
 
-/* ======== CREATE ======== */
-
+/* CREATE */
 function createSaving(){
 
 let title=document.getElementById("title").value
@@ -402,47 +412,37 @@ show('save2')
 
 }
 
-/* ======== SAVE LOCAL ======== */
-
+/* SAVE */
 function save(){
 localStorage.setItem("mina",JSON.stringify(data))
 }
 
-/* ======== LIST ======== */
-
+/* LIST */
 function renderList(){
 
 list.innerHTML=""
 
 data.forEach((d,i)=>{
-
 list.innerHTML+=`
 <div class="card" onclick="openSaving(${i})">
 ${d.title}
-</div>
-`
-
+</div>`
 })
 
 }
 
-/* ======== OPEN ======== */
-
+/* OPEN */
 function openSaving(i){
-
 current=i
 stitle.innerText=data[i].title
 renderTable()
 show('save3')
-
 }
 
-/* ======== ADD MONEY ======== */
-
+/* ADD */
 function add(isSave){
 
 let val=parse(amount.value)
-
 if(!val)return
 
 let s=data[current]
@@ -464,8 +464,7 @@ renderTable()
 
 }
 
-/* ======== TABLE ======== */
-
+/* TABLE */
 function renderTable(){
 
 let s=data[current]
@@ -478,16 +477,13 @@ bar.style.width=percent+"%"
 tbody.innerHTML=""
 
 s.history.forEach(h=>{
-
 tbody.innerHTML+=`
 <tr>
 <td>${h.date}</td>
 <td>${format(h.inc)}</td>
 <td>${format(h.exp)}</td>
 <td>${format(h.bal)}</td>
-</tr>
-`
-
+</tr>`
 })
 
 }
