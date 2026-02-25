@@ -44,23 +44,27 @@ body{
   transition:0.4s;
 }
 
-/* LANGUAGE BUTTON */
-.lang{
-position:fixed;
-top:10px;
-left:10px;
-z-index:999;
+/* ================= LANGUAGE SWITCH BUTTON ================= */
+
+.lang-switch{
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  gap: 6px;
+  z-index: 1000; /* selalu di atas halaman */
 }
 
-.lang button{
-padding:5px 10px;
-border-radius:10px;
-border:none;
-cursor:pointer;
-margin-right:5px;
-font-size:12px;
+.lang-switch button{
+  padding:6px 10px;
+  border-radius:8px;
+  border:none;
+  cursor:pointer;
+  font-weight:600;
+  background: var(--primary); /* bisa ikut tema pastel */
+  color: white;
 }
-
+  
 /* ================= PAGE ================= */
 
 .page{
@@ -293,16 +297,16 @@ th,td{
 </head>
 <body>
 
-<!-- LANGUAGE -->
-<div class="lang">
-<button onclick="setLang('id')">🇮🇩</button>
-<button onclick="setLang('en')">🇬🇧</button>
+<!-- LANGUAGE SWITCH -->
+<div class="lang-switch">
+  <button onclick="setLang('en')">ENG</button>
+  <button onclick="setLang('id')">IND</button>
 </div>
 
 <!-- HOME -->
 <div id="home" class="page active">
 <div class="center">
-<h1>Mina's Finance Assistant 🐱💰</h1>
+<h1>Mina's Finance Assistant 💰</h1>
 <p id="homeText">Hi, I'm Mina! Your cute finance helper ✨</p>
 <button onclick="show('menu')" id="startBtn">Let's Start ✨</button>
 <button onclick="theme()">Theme</button>
@@ -426,13 +430,69 @@ Days per week:
 
 <!-- CAT + BUBBLE -->
 <div class="cat-container">
-    <div class="chat-bubble" id="bubble">Hi, I'm Mina 🐱</div>
-    <img src="home-cat.png" class="cat" id="cat" onclick="meow()">
+    <img src="home-cat.png" class="mina" id="cat" onclick="meow()">
+<div class="bubble" id="bubble">Hi, I'm Mina 🐱
 </div>
 
 <script>
 
 /* PAGE */
+
+const langData = {
+  en:{
+    homeTitle: "Mina's Finance Assistant 🐱💰",
+    homeDesc: "Hi, I'm Mina! Your cute finance helper ✨",
+    startBtn: "Let's Start ✨",
+    menuTitle: "Choose Menu",
+    savings: "Savings",
+    savingsSub: "Save Money",
+    debts: "Debts",
+    debtsSub: "Manage Debts",
+    planner: "Money Planner",
+    plannerSub: "Plan your Money",
+    createSavings: "Create Savings",
+    savingsTitle: "Savings title",
+    targetAmount: "Target amount",
+    daysPerWeek: "Days per week:",
+    createBtn: "Create",
+    addSave: "➕ Save",
+    addTake: "➖ Take",
+    totalText: "Total: Rp",
+    bubbleHome: "Hi, I'm Mina 🐱",
+    bubbleMenu: "Let's get started!",
+    bubbleSavings: "Time to save 💰",
+    bubbleDebts: "Manage your debts 📒",
+    bubblePlanner: "Plan your money 📊"
+  },
+  id:{
+    homeTitle: "Asisten Keuangan Mina 🐱💰",
+    homeDesc: "Hai, aku Mina! Asisten keuangan lucu kamu ✨",
+    startBtn: "Mulai ✨",
+    menuTitle: "Pilih Menu",
+    savings: "Tabungan",
+    savingsSub: "Menabung",
+    debts: "Utang Piutang",
+    debtsSub: "Kelola Utang",
+    planner: "Perencana Uang",
+    plannerSub: "Rencanakan Uang",
+    createSavings: "Buat Tabungan",
+    savingsTitle: "Judul Tabungan",
+    targetAmount: "Jumlah Target",
+    daysPerWeek: "Hari per minggu:",
+    createBtn: "Buat",
+    addSave: "➕ Tambah",
+    addTake: "➖ Ambil",
+    totalText: "Total: Rp",
+    bubbleHome: "Hai, aku Mina 🐱",
+    bubbleMenu: "Ayo mulai!",
+    bubbleSavings: "Saatnya menabung 💰",
+    bubbleDebts: "Kelola utangmu 📒",
+    bubblePlanner: "Rencanakan uangmu 📊"
+  }
+};
+
+let currentLang = localStorage.getItem("lang") || 'en';
+  
 function show(id){
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
@@ -491,25 +551,48 @@ function meow(){
 
 /* LANGUAGE */
 function setLang(lang){
+  currentLang = lang;
+  localStorage.setItem("lang", lang);
 
-localStorage.setItem("lang",lang)
+  // HOME
+  document.querySelector("#home h1").innerText = langData[lang].homeTitle;
+  document.querySelector("#home p").innerText = langData[lang].homeDesc;
+  document.querySelector("#home button").innerText = langData[lang].startBtn;
 
-if(lang=="id"){
-menuTitle.innerText="Pilih Menu"
-homeText.innerText="Hai, aku Mina! Asisten keuangan lucu kamu ✨"
-startBtn.innerText="Mulai ✨"
+  // MENU
+  document.querySelector("#menu h2").innerText = langData[lang].menuTitle;
+  const icons = document.querySelectorAll("#menu .icon");
+  icons[0].innerHTML = `💰<br>${langData[lang].savings}<br><small>${langData[lang].savingsSub}</small>`;
+  icons[1].innerHTML = `📒<br>${langData[lang].debts}<br><small>${langData[lang].debtsSub}</small>`;
+  icons[2].innerHTML = `📊<br>${langData[lang].planner}<br><small>${langData[lang].plannerSub}</small>`;
+
+  // Bubble chat halaman aktif
+  const activePage = document.querySelector(".page.active").id;
+  const bubble = document.getElementById('bubble');
+  switch(activePage){
+    case 'home': bubble.innerText = langData[lang].bubbleHome; break;
+    case 'menu': bubble.innerText = langData[lang].bubbleMenu; break;
+    case 'save1': bubble.innerText = langData[lang].bubbleSavings; break;
+    case 'debts1': bubble.innerText = langData[lang].bubbleDebts; break;
+    case 'planner1': bubble.innerText = langData[lang].bubblePlanner; break;
+  }
+
+  // Input placeholders halaman create savings
+  document.getElementById("title").placeholder = langData[lang].savingsTitle;
+  document.getElementById("target").placeholder = langData[lang].targetAmount;
+  document.getElementById("days").previousSibling.textContent = langData[lang].daysPerWeek;
+  document.querySelector("#save1 button").innerText = langData[lang].createBtn;
+
+  // Tombol tambah/ambil halaman save3
+  document.querySelector("#save3 button:nth-child(1)").innerText = langData[lang].addSave;
+  document.querySelector("#save3 button:nth-child(2)").innerText = langData[lang].addTake;
+
+  // Total label
+  document.querySelector("#save3 h3").childNodes[0].textContent = langData[lang].totalText + " ";
 }
 
-if(lang=="en"){
-menuTitle.innerText="Choose Menu"
-homeText.innerText="Hi, I'm Mina! Your cute finance helper ✨"
-startBtn.innerText="Let's Start ✨"
-}
-
-}
-
-let savedLang=localStorage.getItem("lang")
-if(savedLang)setLang(savedLang)
+// panggil otomatis saat load
+setLang(currentLang);
 
 /* FORMAT */
 function format(n){
@@ -634,6 +717,7 @@ renderList()
 
 </body>
 </html>
+
 
 
 
