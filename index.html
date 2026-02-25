@@ -258,45 +258,39 @@ th,td{
   animation: float 3s ease-in-out infinite; /* default */
 }
 
-/* ================= BUBBLE CHAT ================= */
-#mina-container{
-  position: fixed;
-  right: 20px;
-  bottom: 120px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  z-index: 1000;
+/* Bubble chat */
+.cat-container{
+    position: fixed;
+    bottom: 50px;
+    right: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    z-index: 999;
 }
 
-.bubble{
-  margin-bottom: 10px;
-  background: var(--card);
-  padding: 10px 15px;
-  border-radius: 15px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  max-width: 200px;
-  text-align: center;
-  position: relative;
-  z-index: 1001; /* pastikan di atas kucing */
+.chat-bubble{
+    position: relative;
+    background: var(--card);
+    padding: 10px 14px;
+    border-radius: 14px;
+    font-size: 14px;
+    max-width: 160px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+    z-index: 10;
 }
 
-.bubble::after{
-  content: "";
-  position: absolute;
-  bottom: -8px;
-  left: 50%;
-  transform: translateX(-50%);
-  border-width: 8px;
-  border-style: solid;
-  border-color: var(--card) transparent transparent transparent;
-}
-
-.mina{
-  width: 120px;
-  cursor: pointer;
-  animation: float 3s ease-in-out infinite;
-  z-index: 1000; /* di bawah bubble */
+.chat-bubble::after{
+    content: "";
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 14px;
+    height: 14px;
+    background: var(--card);
+    border-radius: 50%;
 }
 
 </style>
@@ -751,6 +745,7 @@ renderList()
 
 </body>
 </html>
+
 
 
 
