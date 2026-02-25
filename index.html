@@ -44,8 +44,7 @@ body{
   transition:0.4s;
 }
 
-/* ================= LANGUAGE ================= */
-
+/* LANGUAGE BUTTON */
 .lang{
 position:fixed;
 top:10px;
@@ -251,66 +250,95 @@ th,td{
 <!-- MENU -->
 <div id="menu" class="page">
 <h2 id="menuTitle">Choose Menu</h2>
+
 <div class="grid">
+
 <div class="icon" onclick="show('save1')">
-💰<br><span id="savText">Savings</span><br><small>Menabung</small>
+💰<br>Savings<br><small>Menabung</small>
 </div>
+
 <div class="icon" onclick="show('debts')">
-📒<br><span id="debText">Debts</span><br><small>Utang Piutang</small>
+📒<br>Debts<br><small>Utang Piutang</small>
 </div>
+
 <div class="icon" onclick="show('planner')">
-📊<br><span id="planText">Money Planner</span><br><small>Perencana Uang</small>
+📊<br>Money Planner<br><small>Perencana Uang</small>
 </div>
+
 </div>
+
 </div>
 
 <!-- DEBTS -->
 <div id="debts" class="page">
 <h2>Debts</h2>
-<div class="card">Feature coming soon ✨</div>
+<div class="card">Coming Soon ✨</div>
 </div>
 
 <!-- PLANNER -->
 <div id="planner" class="page">
 <h2>Money Planner</h2>
-<div class="card">Feature coming soon ✨</div>
+<div class="card">Coming Soon ✨</div>
 </div>
 
 <!-- CREATE SAVING -->
 <div id="save1" class="page">
 <h2>Create Savings</h2>
+
 <div class="card">
+
 <input id="title" placeholder="Savings title"><br>
 <input id="target" placeholder="Target amount"><br>
+
 Days per week:
 <select id="days">
-<option>1</option><option>2</option><option>3</option>
-<option>4</option><option>5</option><option>6</option>
+<option>1</option>
+<option>2</option>
+<option>3</option>
+<option>4</option>
+<option>5</option>
+<option>6</option>
 <option>7</option>
 </select><br>
+
 <button onclick="createSaving()">Create</button>
+
 </div>
+
 </div>
 
 <!-- LIST -->
 <div id="save2" class="page">
+
 <h2>Your Savings</h2>
 <div id="list"></div>
+
 </div>
 
 <!-- DETAIL -->
 <div id="save3" class="page">
+
 <h2 id="stitle"></h2>
+
 <div class="card">
+
 <input id="amount" placeholder="Amount"><br>
+
 <button onclick="add(true)">➕ Save</button>
 <button onclick="add(false)">➖ Take</button>
+
 <h3>Total: Rp <span id="total">0</span></h3>
-<div class="progress"><div class="bar" id="bar"></div></div>
+
+<div class="progress">
+<div class="bar" id="bar"></div>
+</div>
+
 </div>
 
 <div class="card">
+
 <table>
+
 <thead>
 <tr>
 <th>Date</th>
@@ -319,9 +347,13 @@ Days per week:
 <th>Balance</th>
 </tr>
 </thead>
+
 <tbody id="tbody"></tbody>
+
 </table>
+
 </div>
+
 </div>
 
 <!-- NAV -->
@@ -349,7 +381,8 @@ document.body.classList.toggle('dark')
 
 /* SOUND */
 function meow(){
-new Audio('meow.mp3').play()
+let a=new Audio('meow.mp3')
+a.play()
 }
 
 /* LANGUAGE */
@@ -359,18 +392,12 @@ localStorage.setItem("lang",lang)
 
 if(lang=="id"){
 menuTitle.innerText="Pilih Menu"
-savText.innerText="Tabungan"
-debText.innerText="Utang"
-planText.innerText="Perencana"
 homeText.innerText="Hai, aku Mina! Asisten keuangan lucu kamu ✨"
 startBtn.innerText="Mulai ✨"
 }
 
 if(lang=="en"){
 menuTitle.innerText="Choose Menu"
-savText.innerText="Savings"
-debText.innerText="Debts"
-planText.innerText="Money Planner"
 homeText.innerText="Hi, I'm Mina! Your cute finance helper ✨"
 startBtn.innerText="Let's Start ✨"
 }
@@ -423,26 +450,32 @@ function renderList(){
 list.innerHTML=""
 
 data.forEach((d,i)=>{
+
 list.innerHTML+=`
 <div class="card" onclick="openSaving(${i})">
 ${d.title}
-</div>`
+</div>
+`
+
 })
 
 }
 
 /* OPEN */
 function openSaving(i){
+
 current=i
 stitle.innerText=data[i].title
 renderTable()
 show('save3')
+
 }
 
 /* ADD */
 function add(isSave){
 
 let val=parse(amount.value)
+
 if(!val)return
 
 let s=data[current]
@@ -477,13 +510,16 @@ bar.style.width=percent+"%"
 tbody.innerHTML=""
 
 s.history.forEach(h=>{
+
 tbody.innerHTML+=`
 <tr>
 <td>${h.date}</td>
 <td>${format(h.inc)}</td>
 <td>${format(h.exp)}</td>
 <td>${format(h.bal)}</td>
-</tr>`
+</tr>
+`
+
 })
 
 }
