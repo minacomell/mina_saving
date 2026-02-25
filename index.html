@@ -1,337 +1,336 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Mina's Saving</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mina’s Finance Assistant</title>
 
 <style>
+:root{
+  --bg:#ffeef5;
+  --card:#ffffff;
+  --primary:#ff9ec4;
+  --text:#333;
+}
+
+body.dark{
+  --bg:#1e1e2f;
+  --card:#2b2b3c;
+  --primary:#ff9ec4;
+  --text:#eee;
+}
+
 body{
   margin:0;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg,#ffd6e7,#d6f0ff,#fff0d6);
-  min-height:100vh;
+  font-family:Arial, Helvetica, sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  transition:.3s;
 }
 
 .page{
   display:none;
-  min-height:100vh;
-  justify-content:center;
-  align-items:center;
-  flex-direction:column;
   padding:20px;
-  text-align:center;
-  animation: fade 0.6s ease;
+  min-height:100vh;
 }
 
-.active{ display:flex }
-
-@keyframes fade{
-  from{opacity:0; transform:translateY(20px)}
-  to{opacity:1; transform:translateY(0)}
-}
-
-h1{ color:#ff6fa5 }
+.active{display:block}
 
 .card{
-  background:white;
+  background:var(--card);
   padding:20px;
   border-radius:20px;
-  box-shadow:0 10px 25px rgba(0,0,0,0.1);
-  margin:10px;
-  width:100%;
-  max-width:420px;
+  box-shadow:0 5px 15px rgba(0,0,0,.1);
+  margin:10px 0;
 }
 
 button{
-  padding:10px 18px;
+  padding:10px 20px;
   border:none;
-  border-radius:12px;
+  border-radius:20px;
+  background:var(--primary);
+  color:white;
   cursor:pointer;
   margin:5px;
-  font-size:14px;
 }
 
-.primary{ background:#ff8fab; color:white }
-.secondary{ background:#90dbf4 }
-.danger{ background:#ff6b6b; color:white }
-.back{ background:#ccc }
-.modeBtn{ background:#cdb4db }
-.activeMode{ outline:3px solid #ff8fab }
-
-input{
+input, select{
   padding:10px;
   border-radius:10px;
-  border:1px solid #ddd;
-  margin:5px;
+  border:1px solid #ccc;
   width:100%;
+  margin:5px 0;
 }
-
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
-  gap:10px;
-  width:100%;
-  max-width:520px;
-}
-
-.iconCard{
-  background:white;
-  padding:15px;
-  border-radius:15px;
-  cursor:pointer;
-  box-shadow:0 5px 15px rgba(0,0,0,0.1);
-  transition:0.3s;
-}
-
-.iconCard:hover{ transform:scale(1.05) }
 
 table{
   width:100%;
   border-collapse:collapse;
-  margin-top:10px;
 }
 
-th,td{
-  padding:6px;
+td,th{
+  padding:8px;
   border-bottom:1px solid #ddd;
-  font-size:12px;
+  text-align:center;
 }
 
-.star{ font-size:28px; cursor:pointer }
+.progress{
+  height:20px;
+  background:#ddd;
+  border-radius:10px;
+  overflow:hidden;
+}
+
+.progress-bar{
+  height:100%;
+  background:linear-gradient(90deg,#ff9ec4,#ffd6e7);
+  width:0%;
+}
 
 .cat{
-  font-size:50px;
+  position:fixed;
+  bottom:10px;
+  right:10px;
+  width:100px;
+  animation:float 3s infinite;
   cursor:pointer;
-  transition:0.2s;
 }
-.cat:active{ transform:scale(1.2) }
 
+@keyframes float{
+  0%{transform:translateY(0)}
+  50%{transform:translateY(-10px)}
+  100%{transform:translateY(0)}
+}
+
+.bubble{
+  position:fixed;
+  bottom:120px;
+  right:20px;
+  background:white;
+  padding:10px;
+  border-radius:15px;
+  box-shadow:0 3px 10px rgba(0,0,0,.2);
+  max-width:200px;
+}
+
+.nav button{
+  margin:3px;
+}
 </style>
 </head>
-
 <body>
 
-<audio id="coinSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_4010d5c1b4.mp3?filename=coin-collect-19324.mp3"></audio>
-<audio id="failSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_9c6c13c370.mp3?filename=error-126627.mp3"></audio>
-<audio id="catSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_6f9b1b4b1a.mp3?filename=cat-meow-14536.mp3"></audio>
-
-<!-- PAGE 1 -->
-<div class="page active" id="page1">
-  <h1>Mina's Saving 💰</h1>
-  <p>Manage your saving with Mina ✨</p>
-  <div class="cat" onclick="meow()">🐱</div>
-  <small>klik aku!</small>
-  <br><br>
-  <button class="primary" onclick="goPage(2)">Start</button>
+<!-- HOME -->
+<div id="home" class="page active">
+  <div class="card" style="text-align:center">
+    <h1>Mina’s Finance Assistant 🐱💰</h1>
+    <p>Hi, I’m Mina 👋<br>Your cute assistant to manage savings, debts, and finances easily.</p>
+    <button onclick="openPage('savings')">Let’s Start ✨</button>
+    <br><br>
+    <button onclick="toggleDark()">Toggle Theme 🌙</button>
+  </div>
 </div>
 
-<!-- PAGE 2 -->
-<div class="page" id="page2">
-  <h2 id="modeTitle">Tabungan</h2>
-
-  <div>
-    <button id="btnSaving" class="modeBtn activeMode" onclick="setMode('saving')">💰 Nabung</button>
-    <button id="btnDebt" class="modeBtn" onclick="setMode('debt')">📒 Utang Piutang</button>
+<!-- SAVINGS -->
+<div id="savings" class="page">
+  <div class="nav">
+    <button onclick="openPage('home')">Home</button>
+    <button onclick="openPage('debts')">Debts</button>
+    <button onclick="openPage('planner')">Money Planner</button>
   </div>
 
   <div class="card">
-    <input id="judulItem" placeholder="Judul">
-    <input id="targetItem" placeholder="Target (opsional)">
-    <button class="primary" onclick="tambahItem()">Tambah</button>
-  </div>
-
-  <div class="grid" id="listItem"></div>
-
-  <button class="back" onclick="goPage(1)">Kembali</button>
-</div>
-
-<!-- PAGE 3 -->
-<div class="page" id="page3">
-  <h2 id="judulDetail"></h2>
-
-  <div class="card">
-    <input type="date" id="tanggal">
-    <input id="jumlah" placeholder="Jumlah uang">
-    <br>
-    <button class="secondary" onclick="tambahUang()">+ Masuk</button>
-    <button class="danger" onclick="kurangUang()">− Keluar</button>
+    <h2>Savings</h2>
+    <input id="targetName" placeholder="Saving title">
+    <input id="targetAmount" type="number" placeholder="Target amount">
+    <button onclick="addTarget()">Add Target</button>
   </div>
 
   <div class="card">
-    <h3>Total: Rp <span id="total">0</span></h3>
-    <canvas id="chart"></canvas>
-    <table>
-      <thead>
-        <tr>
-          <th>Tanggal</th>
-          <th>Masuk</th>
-          <th>Keluar</th>
-        </tr>
-      </thead>
-      <tbody id="tabel"></tbody>
-    </table>
+    <input id="saveInput" type="number" placeholder="Amount to save">
+    <button onclick="addSaving()">Save Money 💰</button>
   </div>
 
-  <button class="back" onclick="goPage(2)">Kembali</button>
+  <div id="targets"></div>
 </div>
 
-<!-- RATING -->
-<div class="card" style="position:fixed;bottom:10px;right:10px">
-  <div>
-    <span class="star" onclick="rate(1)">⭐</span>
-    <span class="star" onclick="rate(2)">⭐</span>
-    <span class="star" onclick="rate(3)">⭐</span>
-    <span class="star" onclick="rate(4)">⭐</span>
-    <span class="star" onclick="rate(5)">⭐</span>
+<!-- DEBTS -->
+<div id="debts" class="page">
+  <div class="nav">
+    <button onclick="openPage('home')">Home</button>
+    <button onclick="openPage('savings')">Savings</button>
+    <button onclick="openPage('planner')">Money Planner</button>
   </div>
-  <small>Rating: <span id="avg">0</span>/5</small>
+
+  <div class="card">
+    <h2>Debts</h2>
+    <input id="debtName" placeholder="Name">
+    <input id="debtAmount" type="number" placeholder="Amount">
+    <button onclick="addDebt()">Add</button>
+  </div>
+
+  <div id="debtList"></div>
 </div>
+
+<!-- MONEY PLANNER -->
+<div id="planner" class="page">
+  <div class="nav">
+    <button onclick="openPage('home')">Home</button>
+    <button onclick="openPage('savings')">Savings</button>
+    <button onclick="openPage('debts')">Debts</button>
+  </div>
+
+  <div class="card">
+    <h2>Money Planner</h2>
+    <input id="totalMoney" type="number" placeholder="Total money">
+    <select id="priority">
+      <option value="40">Installments Priority</option>
+      <option value="30">Food Priority</option>
+      <option value="20">Savings Priority</option>
+    </select>
+    <button onclick="planMoney()">Calculate</button>
+  </div>
+
+  <div id="planResult"></div>
+</div>
+
+<img src="https://cdn-icons-png.flaticon.com/512/616/616408.png" class="cat" onclick="meow()">
+<div id="bubble" class="bubble">Hi, I’m Mina 🐱</div>
+
+<audio id="meowSound" src="https://www.fesliyanstudios.com/play-mp3/4386"></audio>
+<audio id="coinSound" src="https://www.fesliyanstudios.com/play-mp3/387"></audio>
+<audio id="successSound" src="https://www.fesliyanstudios.com/play-mp3/667"></audio>
 
 <script>
-let mode = 'saving';
-let savingData = JSON.parse(localStorage.getItem('minaSaving')) || [];
-let debtData = JSON.parse(localStorage.getItem('minaDebt')) || [];
-let currentIndex = null;
-let chart;
+let targets = JSON.parse(localStorage.getItem('targets')||'[]');
+let debts = JSON.parse(localStorage.getItem('debts')||'[]');
 
-function currentData(){ return mode==='saving'?savingData:debtData }
-
-function saveAll(){
-  localStorage.setItem('minaSaving', JSON.stringify(savingData));
-  localStorage.setItem('minaDebt', JSON.stringify(debtData));
+function saveData(){
+  localStorage.setItem('targets',JSON.stringify(targets));
+  localStorage.setItem('debts',JSON.stringify(debts));
 }
 
-function goPage(p){
-  document.querySelectorAll('.page').forEach(el=>el.classList.remove('active'));
-  document.getElementById('page'+p).classList.add('active');
-  if(p===2) renderList();
+function openPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+
+  if(id==='savings') setBubble("Saving a little today, a big dream tomorrow 💰");
+  if(id==='debts') setBubble("Don’t worry, I’ll help you track everything clearly 📒");
+  if(id==='planner') setBubble("Let’s divide your money wisely for your needs 💡");
+  if(id==='home') setBubble("Hi, I’m Mina 🐱 I’ll help you manage your money smartly!");
 }
 
-function setMode(m){
-  mode=m;
-  document.getElementById('modeTitle').innerText=m==='saving'?'Tabungan':'Utang Piutang';
-  document.getElementById('btnSaving').classList.toggle('activeMode', m==='saving');
-  document.getElementById('btnDebt').classList.toggle('activeMode', m==='debt');
-  renderList();
+function setBubble(text){
+  document.getElementById('bubble').innerText=text;
 }
 
-function formatRupiah(angka){
-  return (angka||0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+function toggleDark(){
+  document.body.classList.toggle('dark');
 }
 
-function tambahItem(){
-  let judul=document.getElementById('judulItem').value;
-  let target=parseInt(document.getElementById('targetItem').value)||0;
-  if(!judul) return;
-  currentData().push({judul,target,total:0,riwayat:[]});
-  saveAll();
-  renderList();
+function meow(){
+  document.getElementById('meowSound').play();
 }
 
-function renderList(){
-  let list=document.getElementById('listItem');
-  list.innerHTML='';
-  currentData().forEach((item,i)=>{
-    let div=document.createElement('div');
-    div.className='iconCard';
-    div.innerHTML=`${mode==='saving'?'💰':'📒'}<br>${item.judul}`;
-    div.onclick=()=>openDetail(i);
-    list.appendChild(div);
-  });
+function addTarget(){
+  let name=document.getElementById('targetName').value;
+  let amount=parseInt(document.getElementById('targetAmount').value);
+  if(!name||!amount)return;
+
+  targets.push({name,amount,saved:0});
+  saveData();
+  renderTargets();
 }
 
-function openDetail(i){
-  currentIndex=i;
-  document.getElementById('judulDetail').innerText=currentData()[i].judul;
-  renderDetail();
-  goPage(3);
-}
+function addSaving(){
+  let amount=parseInt(document.getElementById('saveInput').value);
+  if(!amount)return;
 
-function renderDetail(){
-  let item=currentData()[currentIndex];
-  document.getElementById('total').innerText=formatRupiah(item.total);
-
-  let tbody=document.getElementById('tabel');
-  tbody.innerHTML='';
-
-  let labels=[];
-  let saldo=0;
-  let dataChart=[];
-
-  item.riwayat.forEach(r=>{
-    tbody.innerHTML+=`<tr>
-      <td>${r.tanggal}</td>
-      <td>${r.masuk?'Rp '+formatRupiah(r.masuk):'-'}</td>
-      <td>${r.keluar?'Rp '+formatRupiah(r.keluar):'-'}</td>
-    </tr>`;
-
-    saldo += (r.masuk||0) - (r.keluar||0);
-    labels.push(r.tanggal);
-    dataChart.push(saldo);
-  });
-
-  if(chart) chart.destroy();
-
-  chart=new Chart(document.getElementById('chart'),{
-    type:'line',
-    data:{
-      labels:labels,
-      datasets:[{
-        label:'Perkembangan Uang',
-        data:dataChart,
-        borderWidth:2
-      }]
-    },
-    options:{ responsive:true }
-  });
-}
-
-function tambahUang(){
-  let tgl=document.getElementById('tanggal').value;
-  let jml=parseInt(document.getElementById('jumlah').value);
-  if(!tgl||!jml) return;
-
-  let item=currentData()[currentIndex];
-  item.total+=jml;
-  item.riwayat.push({tanggal:tgl,masuk:jml});
   document.getElementById('coinSound').play();
-  saveAll();
-  renderDetail();
+
+  let remaining=amount;
+
+  for(let t of targets){
+    if(remaining<=0) break;
+
+    let need=t.amount-t.saved;
+
+    if(need>0){
+      let use=Math.min(need,remaining);
+      t.saved+=use;
+      remaining-=use;
+
+      if(t.saved>=t.amount){
+        document.getElementById('successSound').play();
+        alert("🎉 Target achieved: "+t.name);
+      }
+    }
+  }
+
+  if(remaining>0){
+    alert("Extra money moved to next savings: "+remaining);
+  }
+
+  saveData();
+  renderTargets();
 }
 
-function kurangUang(){
-  let tgl=document.getElementById('tanggal').value;
-  let jml=parseInt(document.getElementById('jumlah').value);
-  if(!tgl||!jml) return;
+function renderTargets(){
+  let div=document.getElementById('targets');
+  div.innerHTML='';
 
-  let item=currentData()[currentIndex];
-  item.total-=jml;
-  item.riwayat.push({tanggal:tgl,keluar:jml});
-  document.getElementById('failSound').play();
-  saveAll();
-  renderDetail();
+  targets.forEach(t=>{
+    let percent=(t.saved/t.amount)*100;
+
+    div.innerHTML+=`
+    <div class="card">
+      <h3>${t.name}</h3>
+      <p>${format(t.saved)} / ${format(t.amount)}</p>
+      <div class="progress"><div class="progress-bar" style="width:${percent}%"></div></div>
+    </div>
+    `;
+  });
 }
 
-function meow(){ document.getElementById('catSound').play(); }
+function addDebt(){
+  let name=document.getElementById('debtName').value;
+  let amount=parseInt(document.getElementById('debtAmount').value);
+  if(!name||!amount)return;
 
-// RATING
-let ratings=JSON.parse(localStorage.getItem("rating"))||[];
-function rate(n){
-  ratings.push(n);
-  localStorage.setItem("rating",JSON.stringify(ratings));
-  tampilRating();
+  debts.push({name,amount});
+  saveData();
+  renderDebts();
 }
 
-function tampilRating(){
-  if(ratings.length===0) return;
-  let avg=ratings.reduce((a,b)=>a+b,0)/ratings.length;
-  document.getElementById('avg').innerText=avg.toFixed(1);
+function renderDebts(){
+  let div=document.getElementById('debtList');
+  div.innerHTML='';
+
+  debts.forEach(d=>{
+    div.innerHTML+=`<div class="card">${d.name} : ${format(d.amount)}</div>`;
+  });
 }
 
-tampilRating();
-renderList();
+function planMoney(){
+  let total=parseInt(document.getElementById('totalMoney').value);
+  let priority=parseInt(document.getElementById('priority').value);
+  if(!total)return;
+
+  let main=total*(priority/100);
+  let other=total-main;
+
+  document.getElementById('planResult').innerHTML=`
+  <div class="card">
+    <p>Main Priority: ${format(main)}</p>
+    <p>Other Needs: ${format(other)}</p>
+  </div>`;
+}
+
+function format(n){
+  return 'Rp '+n.toLocaleString('id-ID');
+}
+
+renderTargets();
+renderDebts();
 </script>
 
 </body>
