@@ -262,40 +262,41 @@ th,td{
 #mina-container{
   position: fixed;
   right: 20px;
-  bottom: 120px; /* jarak dari bawah */
+  bottom: 120px;
   display: flex;
   flex-direction: column;
   align-items: center;
   z-index: 1000;
 }
 
-.mina{
-  width: 120px;
-  cursor: pointer;
-  animation: float 3s ease-in-out infinite; /* animasi mengambang */
-}
-
 .bubble{
-  margin-bottom: 10px; /* jarak ke kucing */
+  margin-bottom: 10px;
   background: var(--card);
   padding: 10px 15px;
   border-radius: 15px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   max-width: 200px;
   text-align: center;
-  position: relative; /* supaya panah bisa absolute */
+  position: relative;
+  z-index: 1001; /* pastikan di atas kucing */
 }
 
-/* panah menjorok ke kucing */
 .bubble::after{
   content: "";
   position: absolute;
-  bottom: -8px; /* sedikit lebih bawah */
+  bottom: -8px;
   left: 50%;
   transform: translateX(-50%);
   border-width: 8px;
   border-style: solid;
-  border-color: var(--card) transparent transparent transparent; /* segitiga panah */
+  border-color: var(--card) transparent transparent transparent;
+}
+
+.mina{
+  width: 120px;
+  cursor: pointer;
+  animation: float 3s ease-in-out infinite;
+  z-index: 1000; /* di bawah bubble */
 }
 
 </style>
@@ -750,6 +751,7 @@ renderList()
 
 </body>
 </html>
+
 
 
 
