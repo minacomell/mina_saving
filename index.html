@@ -259,7 +259,7 @@ th,td{
 }
 
 /* Bubble chat */
-#mina-container{
+#mina-container {
   position: fixed;
   right: 20px;
   bottom: 120px;
@@ -267,17 +267,19 @@ th,td{
   flex-direction: column;
   align-items: center;
   z-index: 1000;
+
+  width: auto;       /* pastikan container nggak blok seluruh halaman */
+  height: auto;
+  pointer-events: none; /* biar container nggak ganggu klik */
 }
 
-.mina{
-  width: 120px;
-  cursor: pointer;
-  animation: float 3s ease-in-out infinite;
+#mina-container img.mina,
+#mina-container .bubble {
+  pointer-events: auto; /* kucing & bubble tetap bisa diklik */
 }
 
-.bubble{
-  display: none; /* default hidden */
-  margin-bottom: 10px;
+.bubble {
+  margin-bottom: 10px; /* jarak ke kucing */
   background: var(--card);
   padding: 10px 15px;
   border-radius: 15px;
@@ -309,13 +311,8 @@ th,td{
 
 <!-- MINA PET + BUBBLE -->
 <div id="mina-container">
-  <div id="bubbleHome" class="bubble chat-bubble">Hi, I'm Mina 🐱</div>
-  <div id="bubbleMenu" class="bubble chat-bubble">Let's get started!</div>
-  <div id="bubbleSavings" class="bubble chat-bubble">Time to save 💰</div>
-  <div id="bubbleDebts" class="bubble chat-bubble">Manage your debts 📒</div>
-  <div id="bubblePlanner" class="bubble chat-bubble">Plan your money 📊</div>
-
-  <img id="cat" src="home-cat.png" class="mina" onclick="meow()">
+  <div class="bubble" id="bubble">Hi, I'm Mina 🐱</div>
+  <img id="cat" class="mina" src="home-cat.png" onclick="meow()">
 </div>
 
 <!-- HALAMAN -->
@@ -570,12 +567,12 @@ function setLang(lang){
   currentLang = lang;
   localStorage.setItem("lang", lang);
 
-  // ================= HOME =================
+  // HOME
   document.getElementById("homeTitle").innerText = langData[lang].homeTitle;
   document.getElementById("homeDesc").innerText = langData[lang].homeDesc;
   document.getElementById("startBtn").innerText = langData[lang].startBtn;
 
-  // ================= MENU =================
+  // MENU
   document.getElementById("menuTitle").innerText = langData[lang].menuTitle;
   document.getElementById("menuSavings").innerText = langData[lang].savings;
   document.getElementById("menuSavingsSub").innerText = langData[lang].savingsSub;
@@ -584,28 +581,30 @@ function setLang(lang){
   document.getElementById("menuPlanner").innerText = langData[lang].planner;
   document.getElementById("menuPlannerSub").innerText = langData[lang].plannerSub;
 
-  // ================= BUBBLE CHAT =================
-  document.getElementById("bubbleHome").innerText = langData[lang].bubbleHome;
-  document.getElementById("bubbleMenu").innerText = langData[lang].bubbleMenu;
-  document.getElementById("bubbleSavings").innerText = langData[lang].bubbleSavings;
-  document.getElementById("bubbleDebts").innerText = langData[lang].bubbleDebts;
-  document.getElementById("bubblePlanner").innerText = langData[lang].bubblePlanner;
+  // Bubble chat semua halaman aktif
+  const pages = ['home','menu','save1','debts1','planner1'];
+  const bubbleTexts = ['bubbleHome','bubbleMenu','bubbleSavings','bubbleDebts','bubblePlanner'];
+  pages.forEach((p,i)=>{
+    const el = document.querySelector(`#${p} .bubble`) || document.getElementById('bubble');
+    if(el) el.innerText = langData[lang][bubbleTexts[i]];
+  });
 
-  // ================= PLACEHOLDERS & BUTTONS =================
+  // Input placeholders halaman create savings
   document.getElementById("title").placeholder = langData[lang].savingsTitle;
   document.getElementById("target").placeholder = langData[lang].targetAmount;
   document.getElementById("days").previousSibling.textContent = langData[lang].daysPerWeek;
   document.querySelector("#save1 button").innerText = langData[lang].createBtn;
 
+  // Tombol tambah/ambil halaman save3
   document.querySelector("#save3 button:nth-child(1)").innerText = langData[lang].addSave;
   document.querySelector("#save3 button:nth-child(2)").innerText = langData[lang].addTake;
+
+  // Total label
   document.querySelector("#save3 h3").childNodes[0].textContent = langData[lang].totalText + " ";
 }
 
-// ================= PANGGIL OTOMATIS SAAT LOAD =================
-let currentLang = localStorage.getItem("lang") || 'en';
+// Panggil saat load
 setLang(currentLang);
-
 /* FORMAT */
 function format(n){
 return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,".")
@@ -729,3 +728,4 @@ renderList()
 
 </body>
 </html>
+
