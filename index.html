@@ -2,242 +2,309 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mina's Saving</title>
 
 <style>
 body{
     font-family:'Segoe UI',sans-serif;
     margin:0;
-    background:linear-gradient(135deg,#ffd6e7,#e0d4ff,#d4f1ff);
+    background:linear-gradient(135deg,#ffd6e7,#d6f0ff,#fff0c9);
+    min-height:100vh;
+    overflow-x:hidden;
 }
 
-.page{display:none;height:100vh;}
-.active{display:flex;}
+/* Background animation */
+body::before{
+    content:"";
+    position:fixed;
+    width:200%;
+    height:200%;
+    background:radial-gradient(circle,#ffffff55 1px,transparent 1px);
+    background-size:40px 40px;
+    animation:moveBg 20s linear infinite;
+    z-index:-1;
+}
+@keyframes moveBg{
+    from{transform:translate(0,0);}
+    to{transform:translate(-200px,-200px);}
+}
 
-.center{
-    justify-content:center;
-    align-items:center;
-    flex-direction:column;
+.page{
+    display:none;
+    padding:20px;
     text-align:center;
+    animation:fade 0.7s;
+}
+.active{display:block;}
+
+@keyframes fade{
+    from{opacity:0; transform:translateY(20px);}
+    to{opacity:1; transform:translateY(0);}
 }
 
-.container{
-    background:white;
-    padding:25px;
-    border-radius:20px;
-    box-shadow:0 10px 25px rgba(0,0,0,0.1);
-    width:90%;
-    max-width:650px;
-}
-
-.icon{
-    font-size:50px;
-    animation:float 2s infinite ease-in-out;
-}
-
-@keyframes float{
-    0%{transform:translateY(0);}
-    50%{transform:translateY(-10px);}
-    100%{transform:translateY(0);}
+h1{
+    color:#ff6fa5;
+    font-size:2.5em;
+    margin-top:30vh;
 }
 
 button{
-    background:#ff8fb1;
+    padding:12px 20px;
     border:none;
-    padding:10px 15px;
-    border-radius:10px;
+    border-radius:15px;
+    background:#ff9ecb;
     color:white;
-    cursor:pointer;
+    font-size:16px;
     margin:5px;
+    cursor:pointer;
+    transition:0.3s;
+}
+button:hover{
+    transform:scale(1.1);
+    background:#ff7ab8;
 }
 
-button:hover{background:#ff6f9a;}
+.card{
+    background:white;
+    border-radius:20px;
+    padding:20px;
+    box-shadow:0 10px 20px rgba(0,0,0,0.1);
+    margin:10px auto;
+    max-width:420px;
+}
 
 input{
-    padding:8px;
-    border-radius:8px;
-    border:1px solid #ddd;
+    padding:10px;
+    border-radius:10px;
+    border:1px solid #ccc;
+    width:80%;
+    margin:5px;
 }
 
 table{
     width:100%;
     border-collapse:collapse;
-    margin-top:10px;
 }
-
 th,td{
-    border:1px solid #eee;
     padding:8px;
-    text-align:center;
+    border-bottom:1px solid #eee;
 }
 
-th{background:#f3ecff;}
-
-.progress{
-    background:#eee;
-    border-radius:10px;
-    overflow:hidden;
-    height:15px;
-    margin-top:10px;
+.total{
+    font-weight:bold;
+    color:#ff6fa5;
+    font-size:18px;
 }
 
-.bar{
-    height:100%;
-    width:0%;
-    background:#7a5cff;
+/* Floating emoji */
+.emoji{
+    position:fixed;
+    font-size:24px;
+    animation:float 6s linear infinite;
+}
+@keyframes float{
+    from{transform:translateY(100vh);}
+    to{transform:translateY(-10vh);}
+}
+
+/* Stars */
+.star{
+    font-size:30px;
+    cursor:pointer;
+    transition:0.2s;
+}
+.star:hover{
+    transform:scale(1.3);
+}
+
+@media(max-width:600px){
+    h1{font-size:2em;margin-top:25vh;}
 }
 </style>
 </head>
 
 <body>
 
-<!-- HALAMAN 1 -->
-<div id="home" class="page active center">
-    <div class="container">
-        <div class="icon">💰</div>
-        <h1>Mina's Saving</h1>
-        <p>Manage your saving with Mina ✨</p>
-        <button onclick="toTarget()">Start</button>
-    </div>
+<!-- SOUND -->
+<audio id="coinSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c1c4b6a8c1.mp3"></audio>
+<audio id="ohnoSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_8c2b6c6d9b.mp3"></audio>
+
+<!-- Floating emojis -->
+<div class="emoji" style="left:10%">💰</div>
+<div class="emoji" style="left:40%">🌸</div>
+<div class="emoji" style="left:70%">✨</div>
+
+<!-- PAGE 1 -->
+<div class="page active" id="page1">
+    <h1>Mina's Saving</h1>
+    <p>Manage your saving with Mina 💖</p>
+    <button onclick="nextPage(2)">Start</button>
 </div>
 
-<!-- HALAMAN TARGET -->
-<div id="targetPage" class="page center">
-    <div class="container">
-        <h2>Pilih Target Tabungan 🎯</h2>
-        Target: Rp <input type="text" id="targetInput" value="1.000.000">
+<!-- PAGE 2 -->
+<div class="page" id="page2">
+    <div class="card">
+        <h2>Target Tabungan 🎯</h2>
+        <input type="number" id="targetInput" placeholder="Masukkan target">
         <br>
-        <button onclick="setTarget()">Lanjut</button>
-        <button onclick="goHome()">⬅ Kembali</button>
+        <button onclick="setTarget()">Simpan Target</button>
+        <button onclick="nextPage(1)">Kembali</button>
     </div>
 </div>
 
-<!-- HALAMAN APP -->
-<div id="appPage" class="page center">
-    <div class="container">
+<!-- PAGE 3 -->
+<div class="page" id="page3">
+    <div class="card">
+        <h2>Catatan Tabungan 💰</h2>
 
-        <button onclick="toTarget()">⬅ Kembali</button>
+        <input type="number" id="amountInput" placeholder="Jumlah uang">
+        <br>
+        <button onclick="addMoney()">➕ Nabung</button>
+        <button onclick="takeMoney()">➖ Ambil</button>
+        <button onclick="nextPage(2)">Kembali</button>
 
-        <h2>Target: Rp <span id="targetText"></span></h2>
-
-        Jumlah: Rp <input type="text" id="jumlah">
-
-        <div>
-            <button onclick="tambah()">➕ Nabung</button>
-            <button onclick="kurang()">➖ Ambil</button>
-        </div>
-
-        <div class="progress">
-            <div class="bar" id="bar"></div>
-        </div>
-
-        <p>Total Saldo: Rp <span id="total">0</span></p>
-        <p>Progress: <span id="persen">0</span>%</p>
-
-        <table>
+        <table id="table">
             <thead>
                 <tr>
                     <th>Hari</th>
                     <th>Tanggal</th>
-                    <th>Pemasukan</th>
-                    <th>Pengeluaran</th>
-                    <th>Saldo</th>
+                    <th>Jumlah</th>
                 </tr>
             </thead>
-            <tbody id="tabel"></tbody>
+            <tbody></tbody>
         </table>
+
+        <p class="total">Total: Rp <span id="total">0</span></p>
+
+        <hr>
+
+        <h3>Rate Mina's Saving ⭐</h3>
+        <div>
+            <span class="star" onclick="rate(1)">⭐</span>
+            <span class="star" onclick="rate(2)">⭐</span>
+            <span class="star" onclick="rate(3)">⭐</span>
+            <span class="star" onclick="rate(4)">⭐</span>
+            <span class="star" onclick="rate(5)">⭐</span>
+        </div>
+
+        <p>Rating rata-rata: <b><span id="avgRating">0</span> ⭐</b></p>
+        <p>Total penilai: <b><span id="totalUser">0</span></b></p>
 
     </div>
 </div>
 
 <script>
-let allData = {};
-let currentTarget = 0;
+let total = 0;
+let data = [];
+let ratings = JSON.parse(localStorage.getItem("minaRatings")) || [];
 
-function formatRupiah(angka){
-    angka = angka.replace(/\D/g,'');
-    return angka.replace(/\B(?=(\d{3})+(?!\d))/g,'.');
+const coin = document.getElementById("coinSound");
+const ohno = document.getElementById("ohnoSound");
+
+/* Format Rupiah */
+function formatRupiah(num){
+    return num.toLocaleString("id-ID");
 }
 
-function parseRupiah(str){
-    return Number(str.replace(/\./g,'')) || 0;
+/* Navigation */
+function nextPage(page){
+    document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+    document.getElementById("page"+page).classList.add("active");
 }
 
-document.getElementById('targetInput').addEventListener('input',function(){
-    this.value = formatRupiah(this.value);
-});
+/* Save */
+function saveData(){
+    localStorage.setItem("minaTotal", total);
+    localStorage.setItem("minaData", JSON.stringify(data));
+}
 
-function toTarget(){showPage('targetPage');}
-function goHome(){showPage('home');}
+/* Load */
+function loadData(){
+    total = parseInt(localStorage.getItem("minaTotal")) || 0;
+    data = JSON.parse(localStorage.getItem("minaData")) || [];
+    updateTable();
+}
 
+/* Target */
 function setTarget(){
-    currentTarget = parseRupiah(document.getElementById("targetInput").value);
-    if(!allData[currentTarget]) allData[currentTarget]=[];
-    document.getElementById("targetText").innerText=currentTarget.toLocaleString('id-ID');
-    showPage('appPage');
-    update();
+    alert("Target tersimpan 💖");
+    nextPage(3);
 }
 
-function showPage(id){
-    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
+/* Add Money */
+function addMoney(){
+    let amount = parseInt(document.getElementById("amountInput").value);
+    if(!amount) return;
+
+    coin.play();
+
+    total += amount;
+    addRow(amount);
+    saveData();
 }
 
-function getToday(){
-    let now=new Date();
-    return {
-        hari:now.toLocaleDateString('id-ID',{weekday:'long'}),
-        tanggal:now.toLocaleDateString('id-ID')
-    };
+/* Take Money */
+function takeMoney(){
+    let amount = parseInt(document.getElementById("amountInput").value);
+    if(!amount) return;
+
+    ohno.play();
+
+    total -= amount;
+    addRow(-amount);
+    saveData();
 }
 
-function tambah(){
-    let jumlah=parseRupiah(document.getElementById("jumlah").value);
-    if(!jumlah)return;
+/* Add Row */
+function addRow(amount){
+    let now = new Date();
+    let hari = now.toLocaleDateString("id-ID",{weekday:"long"});
+    let tgl = now.toLocaleDateString("id-ID");
 
-    let t=getToday();
-    allData[currentTarget].push({hari:t.hari,tanggal:t.tanggal,masuk:jumlah,keluar:0});
-    document.getElementById("jumlah").value="";
-    update();
+    data.push({hari,tgl,amount});
+    updateTable();
 }
 
-function kurang(){
-    let jumlah=parseRupiah(document.getElementById("jumlah").value);
-    if(!jumlah)return;
-
-    let t=getToday();
-    allData[currentTarget].push({hari:t.hari,tanggal:t.tanggal,masuk:0,keluar:jumlah});
-    document.getElementById("jumlah").value="";
-    update();
-}
-
-function update(){
-    let data=allData[currentTarget]||[];
-    let saldo=0;
-
-    let tabel=document.getElementById("tabel");
-    tabel.innerHTML="";
+/* Update Table */
+function updateTable(){
+    let tbody = document.querySelector("#table tbody");
+    tbody.innerHTML = "";
 
     data.forEach(d=>{
-        saldo += d.masuk;
-        saldo -= d.keluar;
-
-        tabel.innerHTML+=`
+        let row = `
         <tr>
             <td>${d.hari}</td>
-            <td>${d.tanggal}</td>
-            <td>${d.masuk? 'Rp '+d.masuk.toLocaleString('id-ID'):'-'}</td>
-            <td>${d.keluar? 'Rp '+d.keluar.toLocaleString('id-ID'):'-'}</td>
-            <td>Rp ${saldo.toLocaleString('id-ID')}</td>
+            <td>${d.tgl}</td>
+            <td>${formatRupiah(d.amount)}</td>
         </tr>`;
+        tbody.innerHTML += row;
     });
 
-    document.getElementById("total").innerText=saldo.toLocaleString('id-ID');
-
-    let persen=Math.min(100,(saldo/currentTarget)*100).toFixed(1);
-    document.getElementById("persen").innerText=persen;
-    document.getElementById("bar").style.width=persen+"%";
+    document.getElementById("total").innerText = formatRupiah(total);
 }
+
+/* Rating */
+function rate(star){
+    ratings.push(star);
+    localStorage.setItem("minaRatings", JSON.stringify(ratings));
+    updateRating();
+    alert("Makasih sudah kasih rating 💖");
+}
+
+function updateRating(){
+    if(ratings.length === 0) return;
+
+    let totalRate = ratings.reduce((a,b)=>a+b,0);
+    let avg = (totalRate / ratings.length).toFixed(1);
+
+    document.getElementById("avgRating").innerText = avg;
+    document.getElementById("totalUser").innerText = ratings.length;
+}
+
+/* Load start */
+loadData();
+updateRating();
 </script>
 
 </body>
