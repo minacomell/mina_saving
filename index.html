@@ -216,17 +216,34 @@ th,td{
 }
 
  /* ================= BUBBLE CHAT BARU ================= */
+.cat-container{
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;       /* jarak bubble ke kucing */
+    z-index: 999;
+}
+
+.cat{
+    width: 120px;  /* ukuran kucing */
+    cursor: pointer;
+}
+
+/* Bubble chat */
 .chat-bubble{
     position: relative;
-    background: var(--card); /* atau var(--bubble-color) */
+    background: var(--card);
     padding: 10px 14px;
     border-radius: 14px;
     font-size: 14px;
     max-width: 160px;
     box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+    z-index: 10;
 }
 
-/* tonjolan ke arah kucing */
+/* Tonjolan lucu ke arah kucing */
 .chat-bubble::after{
     content: "";
     position: absolute;
@@ -238,38 +255,10 @@ th,td{
     border-radius: 50%;
 }
 
-/* bulatan kecil tambahan */
-.chat-bubble::before{
-    content: "";
-    position: absolute;
-    bottom: 3px;
-    right: -14px;
-    width: 8px;
-    height: 8px;
-    background: var(--card);
-    border-radius: 50%;
-}
-
-.cat-container{
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    display: flex;
-    align-items: flex-end;
-    gap: 3px;
-    z-index: 999;
-}
-  
 </style>
 </head>
 <body>
 
-<!-- ================= CAT + BUBBLE CHAT ================= -->
-<div class="cat-container">
-    <img src="mina-cat.png" class="cat" onclick="meow()">
-    <div class="chat-bubble" id="bubble">Hi, I'm Mina 🐱</div>
-</div>
-  
 <!-- LANGUAGE -->
 <div class="lang">
 <button onclick="setLang('id')">🇮🇩</button>
@@ -403,7 +392,10 @@ Days per week:
 
 <!-- MINA -->
 <img src="mina-cat.png" class="mina" onclick="meow()">
-<div class="bubble" id="bubble">Hi, I'm Mina 🐱</div>
+<div class="cat-container">
+    <div class="chat-bubble" id="bubble">Hi, I'm Mina 🐱</div>
+    <img src="mina-cat.png" class="cat" onclick="meow()">
+</div>
 
 <script>
 
@@ -569,6 +561,7 @@ renderList()
 
 </body>
 </html>
+
 
 
 
