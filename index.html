@@ -218,17 +218,24 @@ th,td{
  /* ================= BUBBLE CHAT BARU ================= */
 .cat-container{
     position: fixed;
-    bottom: 20px;
-    right: 20px;
+    bottom: 80px;      /* agak atas dari pojok bawah */
+    right: 30px;       /* agak ke kiri dari tepi */
     display: flex;
     align-items: flex-end;
-    gap: 3px;       /* jarak bubble ke kucing */
+    gap: 3px;           /* jarak bubble ke kucing */
     z-index: 999;
 }
 
 .cat{
-    width: 120px;  /* ukuran kucing */
+    width: 120px;      /* ukuran kucing */
     cursor: pointer;
+    animation: float 3s ease-in-out infinite; /* animasi */
+}
+
+/* animasi kucing floating */
+@keyframes float{
+    0%, 100%{ transform: translateY(0);}
+    50%{ transform: translateY(-6px);}
 }
 
 /* Bubble chat */
@@ -390,8 +397,7 @@ Days per week:
 <button onclick="show('menu')">Menu</button>
 </div>
 
-<!-- MINA -->
-<img src="mina-cat.png" class="mina" onclick="meow()">
+<!-- CAT + BUBBLE -->
 <div class="cat-container">
     <div class="chat-bubble" id="bubble">Hi, I'm Mina 🐱</div>
     <img src="mina-cat.png" class="cat" onclick="meow()">
@@ -412,8 +418,8 @@ document.body.classList.toggle('dark')
 
 /* SOUND */
 function meow(){
-let a=new Audio('meow.mp3')
-a.play()
+    let a = new Audio('meow.mp3');
+    a.play();
 }
 
 /* LANGUAGE */
@@ -561,6 +567,7 @@ renderList()
 
 </body>
 </html>
+
 
 
 
