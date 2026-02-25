@@ -200,53 +200,6 @@ th,td{
   50%{transform:translateY(-10px)}
   100%{transform:translateY(0)}
 }
-
-.chat-bubble{
-    position: relative;
-    background: var(--bubble-color);
-    padding: 10px 14px;
-    border-radius: 14px;
-    font-size: 14px;
-    max-width: 160px;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
-}
-
-.chat-bubble::after{
-    content: "";
-    position: absolute;
-    bottom: 8px;
-    right: -6px;
-    width: 14px;
-    height: 14px;
-    background: var(--bubble-color);
-    border-radius: 50%;
-}
-
-.chat-bubble::before{
-    content: "";
-    position: absolute;
-    bottom: 3px;
-    right: -14px;
-    width: 8px;
-    height: 8px;
-    background: var(--bubble-color);
-    border-radius: 50%;
-}
-
-.cat-container{
-    display:flex;
-    align-items:flex-end;
-    gap:3px;
-}
-
-.cat-wrapper{
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    display:flex;
-    align-items:flex-end;
-    z-index: 10;
-}
 /* ================= RESPONSIVE ================= */
 
 @media(max-width:600px){
@@ -262,10 +215,61 @@ th,td{
 
 }
 
+ /* ================= BUBBLE CHAT BARU ================= */
+.chat-bubble{
+    position: relative;
+    background: var(--card); /* atau var(--bubble-color) */
+    padding: 10px 14px;
+    border-radius: 14px;
+    font-size: 14px;
+    max-width: 160px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+}
+
+/* tonjolan ke arah kucing */
+.chat-bubble::after{
+    content: "";
+    position: absolute;
+    bottom: 8px;
+    right: -6px;
+    width: 14px;
+    height: 14px;
+    background: var(--card);
+    border-radius: 50%;
+}
+
+/* bulatan kecil tambahan */
+.chat-bubble::before{
+    content: "";
+    position: absolute;
+    bottom: 3px;
+    right: -14px;
+    width: 8px;
+    height: 8px;
+    background: var(--card);
+    border-radius: 50%;
+}
+
+.cat-container{
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    z-index: 999;
+}
+  
 </style>
 </head>
 <body>
 
+<!-- ================= CAT + BUBBLE CHAT ================= -->
+<div class="cat-container">
+    <img src="mina-cat.png" class="cat" onclick="meow()">
+    <div class="chat-bubble" id="bubble">Hi, I'm Mina 🐱</div>
+</div>
+  
 <!-- LANGUAGE -->
 <div class="lang">
 <button onclick="setLang('id')">🇮🇩</button>
@@ -565,5 +569,6 @@ renderList()
 
 </body>
 </html>
+
 
 
