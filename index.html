@@ -259,15 +259,29 @@ th,td{
 }
 
 /* Bubble chat */
-.cat-container{
-    position: fixed;
-    bottom: 50px;
-    right: 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    z-index: 999;
+#mina-container{
+  position: fixed;
+  right: 20px;
+  bottom: 120px; /* jarak dari bawah */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1000;
+}
+
+.mina{
+  width: 120px;
+  cursor: pointer;
+}
+
+.bubble{
+  margin-bottom: 10px; /* jarak ke kucing */
+  background: var(--card);
+  padding: 10px 15px;
+  border-radius: 15px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+  max-width: 200px;
+  text-align: center;
 }
 
 .chat-bubble{
@@ -284,13 +298,12 @@ th,td{
 .chat-bubble::after{
     content: "";
     position: absolute;
-    bottom: -6px;
+    bottom: -8px; /* sedikit lebih bawah */
     left: 50%;
     transform: translateX(-50%);
-    width: 14px;
-    height: 14px;
-    background: var(--card);
-    border-radius: 50%;
+    border-width: 8px;
+    border-style: solid;
+    border-color: var(--card) transparent transparent transparent;
 }
 
 </style>
@@ -301,6 +314,37 @@ th,td{
 <div class="lang-switch">
   <button onclick="setLang('en')">ENG</button>
   <button onclick="setLang('id')">IND</button>
+</div>
+
+<!-- KUCING & BUBBLE -->
+<div id="mina-container">
+  <img src="home-cat.png" id="cat" class="mina" onclick="meow()">
+  <div class="bubble" id="bubble">Hi, I'm Mina 🐱</div>
+</div>
+
+<!-- HALAMAN -->
+<div id="home" class="page active">
+  <div class="center">
+    <h1 id="homeTitle">Mina's Finance Assistant 🐱💰</h1>
+    <p id="homeDesc">Hi, I'm Mina! Your cute finance helper ✨</p>
+    <button id="startBtn" onclick="show('menu')">Let's Start ✨</button>
+    <button onclick="theme()">Theme</button>
+  </div>
+</div>
+
+<div id="menu" class="page">
+  <h2 id="menuTitle">Choose Menu</h2>
+  <div class="grid">
+    <div class="icon" onclick="show('save1')">
+      💰<br><span id="menuSavings">Savings</span><br><small id="menuSavingsSub">Save Money</small>
+    </div>
+    <div class="icon" onclick="show('debts1')">
+      📒<br><span id="menuDebts">Debts</span><br><small id="menuDebtsSub">Manage Debts</small>
+    </div>
+    <div class="icon" onclick="show('planner1')">
+      📊<br><span id="menuPlanner">Money Planner</span><br><small id="menuPlannerSub">Plan your Money</small>
+    </div>
+  </div>
 </div>
 
 <!-- HOME -->
@@ -428,12 +472,6 @@ Days per week:
 <button onclick="show('menu')">Menu</button>
 </div>
 
-<!-- CAT + BUBBLE -->
-<div class="cat-container">
-    <img src="home-cat.png" class="mina" id="cat" onclick="meow()">
-<div class="bubble" id="bubble">Hi, I'm Mina 🐱
-</div>
-
 <script>
 
 /* PAGE */
@@ -554,19 +592,21 @@ function setLang(lang){
   currentLang = lang;
   localStorage.setItem("lang", lang);
 
-  // HOME
-  document.querySelector("#home h1").innerText = langData[lang].homeTitle;
-  document.querySelector("#home p").innerText = langData[lang].homeDesc;
-  document.querySelector("#home button").innerText = langData[lang].startBtn;
+  // ================= HOME =================
+  document.getElementById("homeTitle").innerText = langData[lang].homeTitle;
+  document.getElementById("homeDesc").innerText = langData[lang].homeDesc;
+  document.getElementById("startBtn").innerText = langData[lang].startBtn;
 
-  // MENU
-  document.querySelector("#menu h2").innerText = langData[lang].menuTitle;
-  const icons = document.querySelectorAll("#menu .icon");
-  icons[0].innerHTML = `💰<br>${langData[lang].savings}<br><small>${langData[lang].savingsSub}</small>`;
-  icons[1].innerHTML = `📒<br>${langData[lang].debts}<br><small>${langData[lang].debtsSub}</small>`;
-  icons[2].innerHTML = `📊<br>${langData[lang].planner}<br><small>${langData[lang].plannerSub}</small>`;
+  // ================= MENU =================
+  document.getElementById("menuTitle").innerText = langData[lang].menuTitle;
+  document.getElementById("menuSavings").innerText = langData[lang].savings;
+  document.getElementById("menuSavingsSub").innerText = langData[lang].savingsSub;
+  document.getElementById("menuDebts").innerText = langData[lang].debts;
+  document.getElementById("menuDebtsSub").innerText = langData[lang].debtsSub;
+  document.getElementById("menuPlanner").innerText = langData[lang].planner;
+  document.getElementById("menuPlannerSub").innerText = langData[lang].plannerSub;
 
-  // Bubble chat halaman aktif
+  // ================= BUBBLE CHAT HALAMAN AKTIF =================
   const activePage = document.querySelector(".page.active").id;
   const bubble = document.getElementById('bubble');
   switch(activePage){
@@ -575,23 +615,24 @@ function setLang(lang){
     case 'save1': bubble.innerText = langData[lang].bubbleSavings; break;
     case 'debts1': bubble.innerText = langData[lang].bubbleDebts; break;
     case 'planner1': bubble.innerText = langData[lang].bubblePlanner; break;
+    default: bubble.innerText = langData[lang].bubbleHome;
   }
 
-  // Input placeholders halaman create savings
+  // ================= CREATE SAVINGS =================
   document.getElementById("title").placeholder = langData[lang].savingsTitle;
   document.getElementById("target").placeholder = langData[lang].targetAmount;
-  document.getElementById("days").previousSibling.textContent = langData[lang].daysPerWeek;
+  // Days label sebelum select
+  const daysLabel = document.getElementById("days").previousSibling;
+  if(daysLabel) daysLabel.textContent = langData[lang].daysPerWeek;
   document.querySelector("#save1 button").innerText = langData[lang].createBtn;
 
-  // Tombol tambah/ambil halaman save3
+  // ================= SAVE3 (TOMBOL TAMBAH/AMBIL & TOTAL) =================
   document.querySelector("#save3 button:nth-child(1)").innerText = langData[lang].addSave;
   document.querySelector("#save3 button:nth-child(2)").innerText = langData[lang].addTake;
-
-  // Total label
   document.querySelector("#save3 h3").childNodes[0].textContent = langData[lang].totalText + " ";
 }
 
-// panggil otomatis saat load
+// ================= PANGGIL OTOMATIS SAAT LOAD =================
 setLang(currentLang);
 
 /* FORMAT */
@@ -717,6 +758,7 @@ renderList()
 
 </body>
 </html>
+
 
 
 
