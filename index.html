@@ -593,33 +593,26 @@ function setLang(lang){
   document.getElementById("menuPlanner").innerText = langData[lang].planner;
   document.getElementById("menuPlannerSub").innerText = langData[lang].plannerSub;
 
-  // ================= BUBBLE CHAT HALAMAN AKTIF =================
-  const activePage = document.querySelector(".page.active").id;
-  const bubble = document.getElementById('bubble');
-  switch(activePage){
-    case 'home': bubble.innerText = langData[lang].bubbleHome; break;
-    case 'menu': bubble.innerText = langData[lang].bubbleMenu; break;
-    case 'save1': bubble.innerText = langData[lang].bubbleSavings; break;
-    case 'debts1': bubble.innerText = langData[lang].bubbleDebts; break;
-    case 'planner1': bubble.innerText = langData[lang].bubblePlanner; break;
-    default: bubble.innerText = langData[lang].bubbleHome;
-  }
+  // ================= BUBBLE CHAT =================
+  document.getElementById("bubbleHome").innerText = langData[lang].bubbleHome;
+  document.getElementById("bubbleMenu").innerText = langData[lang].bubbleMenu;
+  document.getElementById("bubbleSavings").innerText = langData[lang].bubbleSavings;
+  document.getElementById("bubbleDebts").innerText = langData[lang].bubbleDebts;
+  document.getElementById("bubblePlanner").innerText = langData[lang].bubblePlanner;
 
-  // ================= CREATE SAVINGS =================
+  // ================= PLACEHOLDERS & BUTTONS =================
   document.getElementById("title").placeholder = langData[lang].savingsTitle;
   document.getElementById("target").placeholder = langData[lang].targetAmount;
-  // Days label sebelum select
-  const daysLabel = document.getElementById("days").previousSibling;
-  if(daysLabel) daysLabel.textContent = langData[lang].daysPerWeek;
+  document.getElementById("days").previousSibling.textContent = langData[lang].daysPerWeek;
   document.querySelector("#save1 button").innerText = langData[lang].createBtn;
 
-  // ================= SAVE3 (TOMBOL TAMBAH/AMBIL & TOTAL) =================
   document.querySelector("#save3 button:nth-child(1)").innerText = langData[lang].addSave;
   document.querySelector("#save3 button:nth-child(2)").innerText = langData[lang].addTake;
   document.querySelector("#save3 h3").childNodes[0].textContent = langData[lang].totalText + " ";
 }
 
 // ================= PANGGIL OTOMATIS SAAT LOAD =================
+let currentLang = localStorage.getItem("lang") || 'en';
 setLang(currentLang);
 
 /* FORMAT */
@@ -745,6 +738,7 @@ renderList()
 
 </body>
 </html>
+
 
 
 
