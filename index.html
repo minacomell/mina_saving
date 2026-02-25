@@ -201,17 +201,43 @@ th,td{
   100%{transform:translateY(0)}
 }
 
-.bubble{
-  position:fixed;
-  right:150px;
-  bottom:230px;
-  background:var(--card);
-  padding:10px 15px;
-  border-radius:15px;
-  box-shadow:0 4px 10px rgba(0,0,0,0.1);
-  max-width:200px;
+.chat-bubble{
+    position: relative;
+    background: var(--bubble-color);
+    padding: 10px 14px;
+    border-radius: 14px;
+    font-size: 14px;
+    max-width: 160px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
 }
 
+.chat-bubble::after{
+    content: "";
+    position: absolute;
+    bottom: 8px;
+    right: -6px;
+    width: 14px;
+    height: 14px;
+    background: var(--bubble-color);
+    border-radius: 50%;
+}
+
+.chat-bubble::before{
+    content: "";
+    position: absolute;
+    bottom: 3px;
+    right: -14px;
+    width: 8px;
+    height: 8px;
+    background: var(--bubble-color);
+    border-radius: 50%;
+}
+
+.cat-container{
+    display:flex;
+    align-items:flex-end;
+    gap:3px;
+}
 /* ================= RESPONSIVE ================= */
 
 @media(max-width:600px){
@@ -530,3 +556,4 @@ renderList()
 
 </body>
 </html>
+
