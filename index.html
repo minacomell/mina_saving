@@ -304,13 +304,8 @@ th,td{
 
 <!-- MINA PET + BUBBLE -->
 <div id="mina-container">
-
-  <div id="bubble" class="chat-bubble">
-    Hi, I'm Mina ✨
-  </div>
-
-  <img src="home-cat.png" class="mina" onclick="playSound()">
-
+  <div id="bubble" class="chat-bubble">Hi, I'm Mina! 🐱</div>
+  <img id="mina-img" src="home-cat.gif" class="mina">
 </div>
 
 <!-- HALAMAN -->
@@ -336,38 +331,6 @@ th,td{
       📊<br><span id="menuPlanner">Money Planner</span><br><small id="menuPlannerSub">Plan your Money</small>
     </div>
   </div>
-</div>
-
-<!-- HOME -->
-<div id="home" class="page active">
-<div class="center">
-<h1>Mina's Finance Assistant 💰</h1>
-<p id="homeText">Hi, I'm Mina! Your cute finance helper ✨</p>
-<button onclick="show('menu')" id="startBtn">Let's Start ✨</button>
-<button onclick="theme()">Theme</button>
-</div>
-</div>
-
-<!-- MENU -->
-<div id="menu" class="page">
-<h2 id="menuTitle">Choose Menu</h2>
-
-<div class="grid">
-
-<div class="icon" onclick="show('save1')">
-💰<br>Savings<br><small>Menabung</small>
-</div>
-
-<div class="icon" onclick="show('debts')">
-📒<br>Debts<br><small>Utang Piutang</small>
-</div>
-
-<div class="icon" onclick="show('planner')">
-📊<br>Money Planner<br><small>Perencana Uang</small>
-</div>
-
-</div>
-
 </div>
 
 <!-- DEBTS -->
@@ -523,37 +486,42 @@ const langData = {
 let currentLang = localStorage.getItem("lang") || 'en';
   
 function show(id){
-  function show(id){
 
   // pindah halaman
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 
   const bubble = document.getElementById("bubble");
-  const mina = document.getElementById("mina");
+  const mina = document.querySelector(".mina");
 
-  // ganti bubble + gambar kucing sesuai halaman
+  if(!bubble || !mina) return;
+
+  // HOME
   if(id === "home"){
     bubble.innerText = langData[currentLang].bubbleHome;
     mina.src = "home-cat.png";
   }
 
+  // MENU
   else if(id === "menu"){
     bubble.innerText = langData[currentLang].bubbleMenu;
     mina.src = "menu-cat.png";
   }
 
+  // SAVINGS
   else if(id === "save1" || id === "save2" || id === "save3"){
     bubble.innerText = langData[currentLang].bubbleSavings;
     mina.src = "saving-cat.png";
   }
 
-  else if(id === "debts1" || id === "debts2"){
+  // DEBTS
+  else if(id === "debts"){
     bubble.innerText = langData[currentLang].bubbleDebts;
     mina.src = "debts-cat.png";
   }
 
-  else if(id === "planner1"){
+  // PLANNER
+  else if(id === "planner"){
     bubble.innerText = langData[currentLang].bubblePlanner;
     mina.src = "planner-cat.png";
   }
@@ -737,6 +705,7 @@ renderList()
 
 </body>
 </html>
+
 
 
 
