@@ -209,9 +209,10 @@ th,td{
 @media(max-width:600px){
 
   .mina{
-    width:90px;
-    bottom:110px;
-  }
+  position: relative;
+  width: 180px;
+  margin: auto;
+}
 
   .bubble{
     right:110px;
@@ -251,11 +252,11 @@ th,td{
   50%{ transform: rotate(8deg);}
 }
 
-/* Cat general style */
+/* Kucing */
 .cat{
   width: 120px;
   cursor: pointer;
-  animation: float 3s ease-in-out infinite; /* default */
+  animation: float 3s ease-in-out infinite;
 }
 
 /* Container Mina */
@@ -264,36 +265,70 @@ th,td{
   right: 20px;
   bottom: 110px;
   display: flex;
-  flex-direction: column-reverse; /* kucing bawah, bubble atas */
+  flex-direction: column;
   align-items: center;
   z-index: 9999;
 }
 
 /* Bubble */
 .chat-bubble{
-  position: relative;
+  position: absolute;
+  bottom: 115%; /* posisi di atas kucing */
+  left: 50%;
+  transform: translateX(-50%) scale(0.8);
+
   background: var(--card);
   padding: 10px 14px;
   border-radius: 16px;
   font-size: 14px;
-  max-width: 160px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
-  margin-bottom: 10px;
-  z-index: 10000;
+  white-space: nowrap;
+
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+
+  opacity: 0;
+  animation: bubbleFade 0.35s ease forwards;
 }
 
-/* ekor bubble */
+/* Ekor bubble */
 .chat-bubble::after{
   content: "";
   position: absolute;
   bottom: -8px;
   left: 50%;
   transform: translateX(-50%);
-  width: 0;
-  height: 0;
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-top: 8px solid var(--card);
+
+  border-width: 8px;
+  border-style: solid;
+  border-color: var(--card) transparent transparent transparent;
+}
+
+/* Animasi muncul */
+@keyframes bubbleFade{
+  from{
+    opacity: 0;
+    transform: translateX(-50%) scale(0.7);
+  }
+  to{
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+}
+
+@media(max-width:600px){
+
+  #mina-container{
+    right: 12px;
+    bottom: 100px;
+  }
+
+  .cat{
+    width: 90px;
+  }
+
+  .chat-bubble{
+    font-size: 12px;
+    padding: 8px 10px;
+  }
 }
 
 </style>
@@ -309,7 +344,7 @@ th,td{
 <!-- MINA PET + BUBBLE -->
 <div id="mina-container">
   <div id="bubble" class="chat-bubble">Hi, I'm Mina! 🐱</div>
-  <img id="mina-img" src="home-cat.gif" class="mina">
+  <img id="mina-img" src="home-cat.png" class="cat">
 </div>
 
 <!-- HALAMAN -->
@@ -529,7 +564,10 @@ function show(id){
     bubble.innerText = langData[currentLang].bubblePlanner;
     mina.src = "planner-cat.png";
   }
-
+  // reset animasi bubble biar muncul lagi
+  bubble.style.animation = "none";
+  bubble.offsetHeight;
+  bubble.style.animation = "bubbleFade 0.35s ease forwards";
 }
 
 /* THEME */
@@ -709,6 +747,7 @@ renderList()
 
 </body>
 </html>
+
 
 
 
