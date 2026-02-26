@@ -523,30 +523,41 @@ const langData = {
 let currentLang = localStorage.getItem("lang") || 'en';
   
 function show(id){
+  function show(id){
+
+  // pindah halaman
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 
-  // Hide semua bubble dulu
-  document.querySelectorAll('.bubble').forEach(b => b.style.display = 'none');
+  const bubble = document.getElementById("bubble");
+  const mina = document.getElementById("mina");
 
-  // Tampilkan bubble halaman aktif
-  switch(id){
-    case 'home': document.getElementById('bubbleHome').style.display = 'block'; break;
-    case 'menu': document.getElementById('bubbleMenu').style.display = 'block'; break;
-    case 'save1': document.getElementById('bubbleSavings').style.display = 'block'; break;
-    case 'debts1': document.getElementById('bubbleDebts').style.display = 'block'; break;
-    case 'planner1': document.getElementById('bubblePlanner').style.display = 'block'; break;
+  // ganti bubble + gambar kucing sesuai halaman
+  if(id === "home"){
+    bubble.innerText = langData[currentLang].bubbleHome;
+    mina.src = "home-cat.png";
   }
 
-  // Ganti kucing sesuai halaman
-  const cat = document.getElementById('cat');
-  switch(id){
-    case 'home': cat.src="home-cat.png"; break;
-    case 'menu': cat.src="menu-cat.png"; break;
-    case 'save1': cat.src="saving-cat.png"; break;
-    case 'debts1': cat.src="debts-cat.png"; break;
-    case 'planner1': cat.src="planner-cat.png"; break;
+  else if(id === "menu"){
+    bubble.innerText = langData[currentLang].bubbleMenu;
+    mina.src = "menu-cat.png";
   }
+
+  else if(id === "save1" || id === "save2" || id === "save3"){
+    bubble.innerText = langData[currentLang].bubbleSavings;
+    mina.src = "saving-cat.png";
+  }
+
+  else if(id === "debts1" || id === "debts2"){
+    bubble.innerText = langData[currentLang].bubbleDebts;
+    mina.src = "debts-cat.png";
+  }
+
+  else if(id === "planner1"){
+    bubble.innerText = langData[currentLang].bubblePlanner;
+    mina.src = "planner-cat.png";
+  }
+
 }
 
 /* THEME */
@@ -726,6 +737,7 @@ renderList()
 
 </body>
 </html>
+
 
 
 
