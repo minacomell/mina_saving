@@ -293,11 +293,11 @@ th,td{
 .chat-bubble::after{
   content: "";
   position: absolute;
-  bottom: -8px;
+  bottom: -10px;
   left: 50%;
   transform: translateX(-50%);
 
-  border-width: 8px;
+  border-width: 10px;
   border-style: solid;
   border-color: var(--card) transparent transparent transparent;
 }
@@ -373,13 +373,13 @@ th,td{
 </div>
 
 <!-- DEBTS -->
-<div id="debts" class="page">
+<div class="icon" onclick="show('debts')">
 <h2>Debts</h2>
 <div class="card">Coming Soon ✨</div>
 </div>
 
 <!-- PLANNER -->
-<div id="planner" class="page">
+<div class="icon" onclick="show('debts')">
 <h2>Money Planner</h2>
 <div class="card">Coming Soon ✨</div>
 </div>
@@ -526,45 +526,40 @@ let currentLang = localStorage.getItem("lang") || 'en';
   
 function show(id){
 
-  // pindah halaman
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 
   const bubble = document.getElementById("bubble");
-  const mina = document.querySelector(".mina");
+  const mina = document.getElementById("mina-img");
 
   if(!bubble || !mina) return;
 
-  // HOME
   if(id === "home"){
     bubble.innerText = langData[currentLang].bubbleHome;
     mina.src = "home-cat.png";
   }
 
-  // MENU
   else if(id === "menu"){
     bubble.innerText = langData[currentLang].bubbleMenu;
     mina.src = "menu-cat.png";
   }
 
-  // SAVINGS
   else if(id === "save1" || id === "save2" || id === "save3"){
     bubble.innerText = langData[currentLang].bubbleSavings;
     mina.src = "saving-cat.png";
   }
 
-  // DEBTS
   else if(id === "debts"){
     bubble.innerText = langData[currentLang].bubbleDebts;
     mina.src = "debts-cat.png";
   }
 
-  // PLANNER
   else if(id === "planner"){
     bubble.innerText = langData[currentLang].bubblePlanner;
     mina.src = "planner-cat.png";
   }
-  // reset animasi bubble biar muncul lagi
+
+  // animasi muncul ulang
   bubble.style.animation = "none";
   bubble.offsetHeight;
   bubble.style.animation = "bubbleFade 0.35s ease forwards";
@@ -741,12 +736,13 @@ tbody.innerHTML+=`
 
 }
 
-renderList()
-
+renderList();
+show('home');
 </script>
 
 </body>
 </html>
+
 
 
 
