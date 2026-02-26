@@ -262,11 +262,11 @@ th,td{
 #mina-container{
   position: fixed;
   right: 20px;
-  bottom: 120px;
+  bottom: 110px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  z-index: 9999;   /* penting: biar di atas semua */
+  z-index: 999;
 }
 
 /* Bubble */
@@ -278,21 +278,18 @@ th,td{
   font-size: 14px;
   max-width: 160px;
   box-shadow: 0 3px 8px rgba(0,0,0,0.15);
-  margin-bottom: 8px;
-  z-index: 10000;  /* biar ga ketutup kucing */
+  margin-bottom: 6px;
 }
 
-/* Tonjolan bubble */
 .chat-bubble::after{
   content: "";
   position: absolute;
   bottom: -6px;
   left: 50%;
   transform: translateX(-50%);
-  width: 14px;
-  height: 14px;
-  background: var(--card);
-  border-radius: 50%;
+  border-width: 6px;
+  border-style: solid;
+  border-color: var(--card) transparent transparent transparent;
 }
 
 </style>
@@ -307,8 +304,13 @@ th,td{
 
 <!-- MINA PET + BUBBLE -->
 <div id="mina-container">
-  <div class="bubble" id="bubble">Hi, I'm Mina 🐱</div>
-  <img id="cat" class="mina" src="home-cat.png" onclick="meow()">
+
+  <div id="bubble" class="chat-bubble">
+    Hi, I'm Mina ✨
+  </div>
+
+  <img src="home-cat.png" class="mina" onclick="playSound()">
+
 </div>
 
 <!-- HALAMAN -->
@@ -724,5 +726,6 @@ renderList()
 
 </body>
 </html>
+
 
 
