@@ -273,13 +273,13 @@ th,td{
 /* Bubble */
 .chat-bubble{
   position: absolute;
-  bottom: 115%; /* posisi di atas kucing */
+  bottom: 105%; /* posisi di atas kucing */
   left: 50%;
   transform: translateX(-50%) scale(0.8);
 
   background: var(--card);
   padding: 10px 14px;
-  border-radius: 16px;
+  border-radius: 16px 16px 16px 6px;
   font-size: 14px;
   white-space: nowrap;
 
@@ -293,11 +293,11 @@ th,td{
 .chat-bubble::after{
   content: "";
   position: absolute;
-  bottom: -10px;
-  left: 50%;
+  bottom: -8px;
+  left: 35%;
   transform: translateX(-50%);
 
-  border-width: 10px;
+  border-width: 8px;
   border-style: solid;
   border-color: var(--card) transparent transparent transparent;
 }
@@ -363,25 +363,25 @@ th,td{
     <div class="icon" onclick="show('save1')">
       💰<br><span id="menuSavings">Savings</span><br><small id="menuSavingsSub">Save Money</small>
     </div>
-    <div class="icon" onclick="show('debts1')">
+    <div class="icon" onclick="show('debts')">
       📒<br><span id="menuDebts">Debts</span><br><small id="menuDebtsSub">Manage Debts</small>
     </div>
-    <div class="icon" onclick="show('planner1')">
+    <div class="icon" onclick="show('planner')">
       📊<br><span id="menuPlanner">Money Planner</span><br><small id="menuPlannerSub">Plan your Money</small>
     </div>
   </div>
 </div>
 
 <!-- DEBTS -->
-<div class="icon" onclick="show('debts')">
-<h2>Debts</h2>
-<div class="card">Coming Soon ✨</div>
+<div id="debts" class="page">
+  <h2>Debts</h2>
+  <div class="card">Coming Soon ✨</div>
 </div>
 
 <!-- PLANNER -->
-<div class="icon" onclick="show('debts')">
-<h2>Money Planner</h2>
-<div class="card">Coming Soon ✨</div>
+<div id="planner" class="page">
+  <h2>Money Planner</h2>
+  <div class="card">Coming Soon ✨</div>
 </div>
 
 <!-- CREATE SAVING -->
@@ -742,6 +742,7 @@ show('home');
 
 </body>
 </html>
+
 
 
 
