@@ -274,32 +274,32 @@ th,td{
 .chat-bubble{
   position: absolute;
   bottom: 100%;
-  right: 0px;   /* nempel ke arah kucing */
-  
+  right: 0;
+  transform: translateY(-6px);
+
   background: var(--card);
   padding: 10px 14px;
   border-radius: 16px;
   font-size: 14px;
   white-space: nowrap;
-
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-
-  opacity: 0;
   animation: bubbleFade 0.35s ease forwards;
 }
 
-/* EKOR KE ARAH KUCING */
+/* EKOR WA STYLE */
 .chat-bubble::after{
   content: "";
   position: absolute;
-  bottom: -8px;
-  right: 18px;   /* posisi ekor tepat di bawah sisi kanan */
-  
-  border-width: 8px;
-  border-style: solid;
-  border-color: var(--card) transparent transparent transparent;
-}
+  bottom: 6px;
+  right: -6px;
 
+  width: 14px;
+  height: 14px;
+  background: var(--card);
+
+  transform: rotate(45deg);
+  border-radius: 3px;
+}
 /* Animasi muncul */
 @keyframes bubbleFade{
   from{
@@ -740,6 +740,7 @@ show('home');
 
 </body>
 </html>
+
 
 
 
