@@ -275,40 +275,40 @@ th,td{
   position: absolute;
   bottom: 100%;
   right: 0;
-  transform: translateY(-6px);
+  margin-bottom: 8px;
 
   background: var(--card);
   padding: 10px 14px;
-  border-radius: 16px;
+  border-radius: 16px 16px 4px 16px; /* sudut kanan bawah lebih kecil */
   font-size: 14px;
   white-space: nowrap;
+
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   animation: bubbleFade 0.35s ease forwards;
 }
 
-/* EKOR WA STYLE */
+/* EKOR WA HALUS */
 .chat-bubble::after{
   content: "";
   position: absolute;
-  bottom: 6px;
+  bottom: 0;
   right: -6px;
 
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
   background: var(--card);
 
-  transform: rotate(45deg);
-  border-radius: 3px;
+  border-bottom-left-radius: 12px;
 }
 /* Animasi muncul */
 @keyframes bubbleFade{
   from{
     opacity: 0;
-    transform: translateX(-50%) scale(0.7);
+    transform: scale(0.8);
   }
   to{
     opacity: 1;
-    transform: translateX(-50%) scale(1);
+    transform: scale(1);
   }
 }
 
@@ -740,6 +740,7 @@ show('home');
 
 </body>
 </html>
+
 
 
 
