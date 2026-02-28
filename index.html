@@ -262,7 +262,7 @@ th,td{
 /* Container Mina */
 #mina-container{
   position: fixed;
-  right: 20px;
+  right: 60px;
   bottom: 110px;
   display: flex;
   flex-direction: column;
@@ -276,6 +276,7 @@ th,td{
   bottom: 120%;
   left: 50%;
   transform: translateX(-50%);
+  z-index: 10;
 
   background: var(--card);
   padding: 10px 16px;
@@ -285,18 +286,21 @@ th,td{
 
   box-shadow: 0 6px 16px rgba(0,0,0,0.15);
 }
-  
-/* SEGITIGA KECIL KE KEPALA KUCING */
+
+/* SEGITIGA JELAS BANGET */
 .chat-bubble::after{
   content: "";
   position: absolute;
-  bottom: -10px;
+  top: 100%;        /* tepat di bawah bubble */
   left: 50%;
   transform: translateX(-50%);
 
-  border-width: 10px;
-  border-style: solid;
-  border-color: var(--card) transparent transparent transparent;
+  width: 0;
+  height: 0;
+
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 10px solid var(--card);
 }
 
 /* Animasi muncul */
@@ -739,6 +743,7 @@ show('home');
 
 </body>
 </html>
+
 
 
 
