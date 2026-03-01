@@ -345,7 +345,7 @@ th,td{
 <!-- MINA PET + BUBBLE -->
 <div id="mina-container">
   <div id="bubble" class="chat-bubble">Hi, I'm Mina! 🐱</div>
-  <img id="mina-img" src="home-cat.png" class="cat">
+  <img id="mina-img" src="home-cat.png" class="cat" onclick="meow()">
 </div>
 
 <!-- HALAMAN -->
@@ -574,7 +574,7 @@ document.body.classList.toggle('dark')
 /* SOUND */
 function meow(){
     let a = new Audio('meow.mp3');
-  a.play();
+    a.play();
 }
 
 /* LANGUAGE */
@@ -743,6 +743,7 @@ show('home');
 
 </body>
 </html>
+
 
 
 
